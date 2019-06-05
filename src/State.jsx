@@ -96,6 +96,7 @@ export const State = ({ player }) => {
               textDecoration: 'none',
               color: 'inherit',
               font: '32px sans-serif',
+              textAlign: 'center',
             }}
           >
             {track.name}
