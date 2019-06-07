@@ -1,14 +1,18 @@
 import React, { useState, useCallback } from 'react'
 import { Button, TextField } from '@material-ui/core'
 import { useSpotifyClient } from '@aeaton/react-spotify'
+import { CancelToken } from 'axios'
 
 const initialQuery = {
   artist: '',
   album: '',
   track: '',
+  genre: '',
   label: '',
   year: '',
 }
+
+let source
 
 export const Search = ({ player }) => {
   const [query, setQuery] = useState(initialQuery)
@@ -32,8 +36,15 @@ export const Search = ({ player }) => {
 
   const search = useCallback(
     params => {
+      if (source) {
+        source.cancel()
+      }
+
+      source = CancelToken.source()
+
       return client.get('/search', {
         params,
+        cancelToken: source.token,
       })
     },
     [client]
@@ -101,6 +112,12 @@ export const Search = ({ player }) => {
         label={'Track'}
         value={query.track}
         onChange={handleChange('track')}
+      />
+
+      <TextField
+        label={'Genre'}
+        value={query.genre}
+        onChange={handleChange('genre')}
       />
 
       <TextField

@@ -1,6 +1,6 @@
-import { Button } from '@material-ui/core'
 import React, { useContext } from 'react'
-import { Auth } from './Auth'
+import { Login } from './Login'
+import { Profile } from './Profile'
 import { Search } from './Search'
 import { SpotifyContext, SpotifyPlaybackContext } from '@aeaton/react-spotify'
 
@@ -24,7 +24,7 @@ export const App = () => {
       >
         {player ? <Search player={player} /> : <div />}
 
-        {accessToken && <Button onClick={logout}>Sign out</Button>}
+        {accessToken && <Profile logout={logout} />}
       </div>
 
       {authError && <div>{authError}</div>}
@@ -33,7 +33,7 @@ export const App = () => {
       {accessToken ? (
         <>{player && <State player={player} />}</>
       ) : (
-        <Auth login={login} />
+        <Login login={login} />
       )}
     </>
   )

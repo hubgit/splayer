@@ -2,10 +2,12 @@
 # yarn lockfile v1
 
 
-"@aeaton/react-spotify@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@aeaton/react-spotify/-/react-spotify-0.0.1.tgz#84120c4ac960d36b379706b0649fcee3b15cf34d"
-  integrity sha512-/V0ywfDKPac85SpaoI/bo7emlvXyeq7AhIug6lKFOXlDf7QwLEs4RY6NS6MCKDBTmohqhKgPtrZKzJojqxgL9A==
+"@aeaton/react-spotify@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.npmjs.org/@aeaton/react-spotify/-/react-spotify-0.0.3.tgz#7b9d49bc72b7f49509fb29980a5733652c039701"
+  integrity sha512-Wt0d7M98N0ELuPxt+GssHaYwacLdOrtHJ2o+eBiaijyhdWXDkS3/GK0ATIqw4eQtBlIR3zAuiAlF0BHLI3j5Kw==
+  dependencies:
+    "@types/spotify-api" "^0.0.1"
 
 "@babel/code-frame@7.0.0", "@babel/code-frame@^7.0.0":
   version "7.0.0"
@@ -1371,6 +1373,11 @@
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
+
+"@types/spotify-api@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.npmjs.org/@types/spotify-api/-/spotify-api-0.0.1.tgz#64657f24616ade5d41bf37876cd1a9a4ae7bf349"
+  integrity sha512-U04VetSyHF/hceog6JbpzukMjEiYzqLu4+nXIeAGTrJuW8f+3cDN/Igw7HBtdvLtGE1FUR6E22ILotnsB9cpgA==
 
 "@types/stack-utils@^1.0.1":
   version "1.0.1"

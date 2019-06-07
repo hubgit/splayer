@@ -8,6 +8,7 @@ import {
 } from '@material-ui/icons'
 import { Album } from './Album'
 import { Image } from './Image'
+import { RelatedArtists } from './RelatedArtists'
 
 let stateTimer
 
@@ -143,6 +144,8 @@ export const State = ({ player }) => {
       </div>
 
       {track.album && <Album album={track.album} />}
+
+      <RelatedArtists artist={track.artists[0]}/>
     </div>
   )
 }

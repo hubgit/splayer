@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from '@material-ui/core'
 
-export const Auth = ({ login }) => (
+export const Login = ({ login }) => (
   <div
     style={{
       display: 'flex',
