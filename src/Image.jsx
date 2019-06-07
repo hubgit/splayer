@@ -1,5 +1,5 @@
-import React from 'react'
 import * as Vibrant from 'node-vibrant'
+import React from 'react'
 
 export const Image = React.memo(
   ({ album, paused }) => {
@@ -17,9 +17,6 @@ export const Image = React.memo(
       return null
     }
 
-    // const borderWidth = ((state.duration - state.position) / state.duration) * 200
-    const borderWidth = 100
-
     return (
       <img
         ref={imageRef}
@@ -31,7 +28,7 @@ export const Image = React.memo(
         style={{
           background: 'white',
           borderRadius: '50%',
-          border: `${borderWidth}px solid black`,
+          border: '100px solid black',
           width: 300,
           padding: 4,
           maxWidth: '100%',

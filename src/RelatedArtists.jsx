@@ -1,6 +1,9 @@
 import { useSpotifyClient } from '@aeaton/react-spotify'
+import { Link } from '@reach/router'
 import { CancelToken } from 'axios'
 import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { uriToID } from './lib'
 
 export const RelatedArtists = React.memo(
   ({ artist }) => {
@@ -46,19 +49,13 @@ export const RelatedArtists = React.memo(
       >
         {artists
           ? artists.map(artist => (
-              <div
+              <ArtistLink
                 key={artist.uri}
-                style={{
-                  display: 'inline-flex',
-                  color: 'white',
-                  fontSize: artist.popularity,
-                  padding: '0 1em',
-                  whiteSpace: 'nowrap',
-                  alignItems: 'center',
-                }}
+                to={`/artists/${uriToID(artist.uri)}`}
+                popularity={artist.popularity}
               >
                 {artist.name}
-              </div>
+              </ArtistLink>
             ))
           : 'Loading…'}
       </div>
@@ -66,3 +63,13 @@ export const RelatedArtists = React.memo(
   },
   (prevProps, nextProps) => prevProps.artist.uri === nextProps.artist.uri
 )
+
+const ArtistLink = styled(Link)`
+  display: inline-flex;
+  color: white;
+  font-size: ${props => props.popularity}px;
+  padding: 0 1em;
+  white-space: nowrap;
+  align-items: center;
+  text-decoration: none;
+`

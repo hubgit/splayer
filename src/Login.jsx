@@ -1,17 +1,24 @@
-import React from 'react'
+import { SpotifyContext } from '@aeaton/react-spotify'
 import { Button } from '@material-ui/core'
+import React, { useContext } from 'react'
+import styled from 'styled-components'
 
-export const Login = ({ login }) => (
-  <div
-    style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: 400,
-    }}
-  >
-    <Button variant="contained" color="primary" onClick={() => login()}>
-      Sign in with Spotify
-    </Button>
-  </div>
-)
+const Container = styled.div`
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+`
+
+export const Login = () => {
+  const { login } = useContext(SpotifyContext)
+
+  return (
+    <Container>
+      <Button variant="contained" color="primary" onClick={login}>
+        Sign in with Spotify
+      </Button>
+    </Container>
+  )
+}

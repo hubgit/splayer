@@ -1,74 +1,51 @@
-import React, { useState, useCallback } from 'react'
-import { Button, TextField } from '@material-ui/core'
 import { useSpotifyClient } from '@aeaton/react-spotify'
+import { Button, TextField } from '@material-ui/core'
 import { CancelToken } from 'axios'
+import React, { useCallback, useEffect, useState } from 'react'
+import styled from 'styled-components'
 
-const initialQuery = {
-  artist: '',
-  album: '',
-  track: '',
-  genre: '',
-  label: '',
-  year: '',
-}
+const ucfirst = text => text.substring(0, 1).toUpperCase() + text.substring(1)
 
 let source
 
-export const Search = ({ player }) => {
-  const [query, setQuery] = useState(initialQuery)
-
+export const Search = ({ fields, type, handleData }) => {
   const client = useSpotifyClient()
 
-  const play = useCallback(
-    uris => {
-      client.put(
-        '/me/player/play',
-        { uris },
-        {
-          params: {
-            device_id: player._options.id,
-          },
-        }
-      )
-    },
-    [client, player]
-  )
+  const [query, setQuery] = useState()
 
-  const search = useCallback(
-    params => {
+  useEffect(() => {
+    setQuery({})
+  }, [setQuery])
+
+  const reset = useCallback(() => {
+    setQuery({})
+  }, [setQuery])
+
+  const submit = useCallback(
+    event => {
+      event.preventDefault()
+
+      const q = Object.keys(query)
+        .filter(key => query[key])
+        .map(key => `${key}:"${query[key]}"`)
+        .join(' ')
+
       if (source) {
         source.cancel()
       }
 
       source = CancelToken.source()
 
-      return client.get('/search', {
-        params,
-        cancelToken: source.token,
-      })
+      client
+        .get('/search', {
+          params: { q, type },
+          cancelToken: source.token,
+        })
+        .then(response => {
+          handleData(response.data)
+        })
     },
-    [client]
-  )
-
-  const handleSubmit = useCallback(
-    event => {
-      event.preventDefault()
-
-      const q = Object.keys(query)
-        .filter(key => query[key])
-        .map(key => `${key}:${query[key]}`)
-        .join(' ')
-
-      search({
-        q,
-        type: 'track',
-      }).then(({ data: { tracks: { items } } }) => {
-        if (items.length) {
-          play(items.map(item => item.uri))
-        }
-      })
-    },
-    [play, query, search]
+    [client, handleData, query, type]
   )
 
   const handleChange = useCallback(
@@ -81,70 +58,41 @@ export const Search = ({ player }) => {
     [query, setQuery]
   )
 
-  const handleReset = useCallback(() => {
-    setQuery(initialQuery)
-  }, [setQuery])
+  if (!query) {
+    return null
+  }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      onReset={handleReset}
-      style={{
-        display: 'grid',
-        gridGap: 16,
-        // gridRow: 'repeat(6, 1fr)',
-        gridAutoFlow: 'row',
-      }}
-    >
-      <TextField
-        label={'Artist'}
-        value={query.artist}
-        onChange={handleChange('artist')}
-      />
+    <Form onSubmit={submit} onReset={reset}>
+      {fields.map(field => (
+        <TextField
+          key={field}
+          label={ucfirst(field)}
+          value={query[field] || ''}
+          onChange={handleChange(field)}
+        />
+      ))}
 
-      <TextField
-        label={'Album'}
-        value={query.album}
-        onChange={handleChange('album')}
-      />
-
-      <TextField
-        label={'Track'}
-        value={query.track}
-        onChange={handleChange('track')}
-      />
-
-      <TextField
-        label={'Genre'}
-        value={query.genre}
-        onChange={handleChange('genre')}
-      />
-
-      <TextField
-        label={'Label'}
-        value={query.label}
-        onChange={handleChange('label')}
-      />
-
-      <TextField
-        label={'Year'}
-        value={query.year}
-        onChange={handleChange('year')}
-      />
-
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
+      <Actions>
         <Button color={'primary'} type={'submit'}>
           Search
         </Button>
 
         <Button type={'reset'}>Reset</Button>
-      </div>
-    </form>
+      </Actions>
+    </Form>
   )
 }
+
+const Form = styled.form`
+  display: grid;
+  grid-gap: 16px;
+  grid-auto-flow: row;
+  margin: 16px;
+`
+
+const Actions = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`

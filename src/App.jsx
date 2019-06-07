@@ -1,36 +1,30 @@
-import React, { useContext } from 'react'
-import { Login } from './Login'
-import { Auth } from './Auth'
 import { SpotifyContext, SpotifyPlaybackContext } from '@aeaton/react-spotify'
-import { Player } from './Player'
+import { Router } from '@reach/router'
+import React, { useContext } from 'react'
+import { AlbumPage } from './AlbumPage'
+import { ArtistPage } from './ArtistPage'
+import { HomePage } from './HomePage'
+import { Login } from './Login'
 
 export const App = () => {
-  const { accessToken, login, logout, error: authError } = useContext(
-    SpotifyContext
-  )
-  const { player, error: playerError } = useContext(SpotifyPlaybackContext)
+  const { accessToken, error: authError } = useContext(SpotifyContext)
+  const { error: playerError } = useContext(SpotifyPlaybackContext)
+
+  if (!accessToken) {
+    return <Login />
+  }
 
   return (
-    <div style={{ fontFamily: '"New York Medium", "Roboto", sans-serif' }}>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-          padding: '0 16px',
-        }}
-      >
-        {accessToken && <Auth logout={logout} />}
-      </div>
-
+    <>
       {authError && <div>{authError}</div>}
       {playerError && <div>{playerError}</div>}
 
-      {accessToken ? (
-        <>{player && <Player player={player} />}</>
-      ) : (
-        <Login login={login} />
-      )}
-    </div>
+      <Router>
+        <HomePage path={'/'} />
+        <ArtistPage path={'/artists/:id'} />
+        <AlbumPage path={'/albums/:id'} />
+        {/*<TrackPage path={'/tracks/:id'} />*/}
+      </Router>
+    </>
   )
 }
