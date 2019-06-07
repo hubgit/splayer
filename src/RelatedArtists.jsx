@@ -39,8 +39,6 @@ export const RelatedArtists = React.memo(
         style={{
           display: 'flex',
           flexWrap: 'wrap',
-          width: 400,
-          height: 800,
           background: 'black',
           overflow: 'hidden',
         }}

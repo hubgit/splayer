@@ -1,10 +1,8 @@
 import React, { useContext } from 'react'
 import { Login } from './Login'
 import { Profile } from './Profile'
-import { Search } from './Search'
 import { SpotifyContext, SpotifyPlaybackContext } from '@aeaton/react-spotify'
-
-import { State } from './State'
+import { Player } from './Player'
 
 export const App = () => {
   const { accessToken, login, logout, error: authError } = useContext(
@@ -17,13 +15,11 @@ export const App = () => {
       <div
         style={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-end',
           alignItems: 'center',
           padding: '0 16px',
         }}
       >
-        {player ? <Search player={player} /> : <div />}
-
         {accessToken && <Profile logout={logout} />}
       </div>
 
@@ -31,7 +27,7 @@ export const App = () => {
       {playerError && <div>{playerError}</div>}
 
       {accessToken ? (
-        <>{player && <State player={player} />}</>
+        <>{player && <Player player={player} />}</>
       ) : (
         <Login login={login} />
       )}

@@ -93,7 +93,7 @@ export const Search = ({ player }) => {
         display: 'grid',
         gridGap: 16,
         // gridRow: 'repeat(6, 1fr)',
-        gridAutoFlow: 'column',
+        gridAutoFlow: 'row',
       }}
     >
       <TextField
