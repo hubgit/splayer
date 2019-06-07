@@ -41,6 +41,7 @@ export const RelatedArtists = React.memo(
           flexWrap: 'wrap',
           background: 'black',
           overflow: 'hidden',
+          padding: 16,
         }}
       >
         {artists

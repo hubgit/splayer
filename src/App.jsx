@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Login } from './Login'
-import { Profile } from './Profile'
+import { Auth } from './Auth'
 import { SpotifyContext, SpotifyPlaybackContext } from '@aeaton/react-spotify'
 import { Player } from './Player'
 
@@ -11,7 +11,7 @@ export const App = () => {
   const { player, error: playerError } = useContext(SpotifyPlaybackContext)
 
   return (
-    <>
+    <div style={{ fontFamily: '"New York Medium", "Roboto", sans-serif' }}>
       <div
         style={{
           display: 'flex',
@@ -20,7 +20,7 @@ export const App = () => {
           padding: '0 16px',
         }}
       >
-        {accessToken && <Profile logout={logout} />}
+        {accessToken && <Auth logout={logout} />}
       </div>
 
       {authError && <div>{authError}</div>}
@@ -31,6 +31,6 @@ export const App = () => {
       ) : (
         <Login login={login} />
       )}
-    </>
+    </div>
   )
 }

@@ -9,17 +9,9 @@ export const Album = React.memo(
 
     useEffect(() => {
       if (client) {
-        client
-          .get('/albums', {
-            params: {
-              ids: [album.uri.replace(/^spotify:album:/, '')].join(','),
-            },
-          })
-          .then(({ data: { albums } }) => {
-            if (albums.length) {
-              setData(albums[0])
-            }
-          })
+        const id = album.uri.replace(/^spotify:album:/, '')
+
+        client.get(`/albums/${id}`).then(({ data }) => setData(data))
       }
     }, [album, client])
 
@@ -30,7 +22,7 @@ export const Album = React.memo(
     console.log(data)
 
     return (
-      <div style={{ font: '14px monospace', width: 400, marginTop: 32 }}>
+      <div style={{ font: '14px monospace' }}>
         <div>Artist: {data.artists.map(artist => artist.name).join(', ')}</div>
         <div>Album: {data.name}</div>
         <div>Label: {data.label}</div>

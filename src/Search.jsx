@@ -132,21 +132,18 @@ export const Search = ({ player }) => {
         onChange={handleChange('year')}
       />
 
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <Button
-          variant={'contained'}
-          color={'primary'}
-          size={'small'}
-          type={'submit'}
-        >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Button color={'primary'} type={'submit'}>
           Search
         </Button>
-      </div>
 
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <Button variant={'contained'} size={'small'} type={'reset'}>
-          Reset
-        </Button>
+        <Button type={'reset'}>Reset</Button>
       </div>
     </form>
   )
