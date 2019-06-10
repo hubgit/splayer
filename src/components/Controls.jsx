@@ -1,6 +1,7 @@
+import { SpotifyPlaybackContext } from '@aeaton/react-spotify'
 import { IconButton } from '@material-ui/core'
 import { PauseCircleFilled, PlayCircleFilled, SkipNext, SkipPrevious } from '@material-ui/icons'
-import React, { useCallback } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -9,7 +10,19 @@ const Container = styled.div`
   justify-content: center;
 `
 
-export const Controls = React.memo(({ player, state }) => {
+export const Controls = React.memo(() => {
+  const { player } = useContext(SpotifyPlaybackContext)
+
+  const [state, setState] = useState()
+
+  useEffect(() => {
+    if (player) {
+      player.addListener('player_state_changed', state => {
+        setState(state)
+      })
+    }
+  }, [player])
+
   const togglePlay = useCallback(() => {
     player.togglePlay()
   }, [player])
@@ -21,6 +34,10 @@ export const Controls = React.memo(({ player, state }) => {
   const previousTrack = useCallback(() => {
     player.previousTrack()
   }, [player])
+
+  if (!state) {
+    return null
+  }
 
   return (
     <Container>

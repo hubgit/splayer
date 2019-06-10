@@ -1,9 +1,9 @@
 import { useSpotifyClient } from '@aeaton/react-spotify'
-import { Link } from '@reach/router'
 import { CancelToken } from 'axios'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { uriToID } from './lib'
+import { uriToID } from '../lib'
+import { PlainLink } from './Links'
 
 export const RelatedArtists = React.memo(
   ({ artist }) => {
@@ -38,17 +38,10 @@ export const RelatedArtists = React.memo(
     }, [client, artist, setArtists])
 
     return (
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          background: 'black',
-          overflow: 'hidden',
-          padding: 16,
-        }}
-      >
-        {artists
-          ? artists.map(artist => (
+      <Container>
+        {artists ? (
+          <div>
+            {artists.map(artist => (
               <ArtistLink
                 key={artist.uri}
                 to={`/artists/${uriToID(artist.uri)}`}
@@ -56,20 +49,38 @@ export const RelatedArtists = React.memo(
               >
                 {artist.name}
               </ArtistLink>
-            ))
-          : 'Loading…'}
-      </div>
+            ))}
+          </div>
+        ) : (
+          'Loading…'
+        )}
+      </Container>
     )
   },
   (prevProps, nextProps) => prevProps.artist.uri === nextProps.artist.uri
 )
 
-const ArtistLink = styled(Link)`
-  display: inline-flex;
+const Container = styled.div`
+  min-height: 100vh;
+  background: black;
   color: white;
+  padding: 64px 32px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const ArtistLink = styled(PlainLink)`
+  display: inline-flex;
   font-size: ${props => props.popularity}px;
   padding: 0 1em;
   white-space: nowrap;
   align-items: center;
-  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+    background: white;
+    color: black;
+  }
 `

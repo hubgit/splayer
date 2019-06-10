@@ -1,8 +1,7 @@
 import { SpotifyPlaybackContext } from '@aeaton/react-spotify'
 import React, { useContext, useEffect } from 'react'
-import { AlbumSearch } from './AlbumSearch'
-import { ArtistSearch } from './ArtistSearch'
-import { Header } from './Header'
+import styled from 'styled-components'
+import { PlainLink } from '../components/Links'
 
 export const HomePage = () => {
   const { player } = useContext(SpotifyPlaybackContext)
@@ -19,9 +18,17 @@ export const HomePage = () => {
 
   return (
     <>
-      <Header />
-      <ArtistSearch />
-      <AlbumSearch />
+      <HomeLink to={'/artists'}>Artists</HomeLink>
+      <HomeLink to={'/albums'}>Albums</HomeLink>
+      <HomeLink to={'/tracks'}>Tracks</HomeLink>
     </>
   )
 }
+
+const HomeLink = styled(PlainLink)`
+  display: block;
+  text-align: center;
+  font-size: 32px;
+  padding: 8px;
+  margin: 16px;
+`

@@ -16,9 +16,7 @@ export const Login = () => {
 
   return (
     <Container>
-      <Button variant="contained" color="primary" onClick={login}>
-        Sign in with Spotify
-      </Button>
+      <Button onClick={login}>Sign in with Spotify</Button>
     </Container>
   )
 }

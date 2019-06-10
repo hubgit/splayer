@@ -1,13 +1,8 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { PlainLink } from './components'
-import { uriToID } from './lib'
-import { Search } from './Search'
-
-const Container = styled.section`
-  margin: 16px;
-  background: white;
-`
+import { PlainLink } from '../components/Links'
+import { Search } from '../components/Search'
+import { uriToID } from '../lib'
 
 const Heading = styled.div`
   font-size: 30px;
@@ -22,9 +17,12 @@ const Results = styled.div`
 
 const Result = styled(PlainLink)`
   font-size: ${props => props.popularity}px;
+  text-align: center;
 `
 
-export const ArtistSearch = () => {
+const fields = ['artist', 'genre', 'label', 'year']
+
+export const ArtistsPage = ({ location }) => {
   const [items, setItems] = useState()
 
   const handleData = useCallback(
@@ -34,14 +32,20 @@ export const ArtistSearch = () => {
     [setItems]
   )
 
+  useEffect(() => {
+    window.scrollTo(0, 0, { behavior: 'smooth' })
+  }, [])
+
   return (
-    <Container>
-      <Heading>Find an Artist</Heading>
+    <>
+      <Heading>Artists</Heading>
 
       <Search
-        fields={['artist', 'genre', 'label', 'year']}
+        location={location}
+        fields={fields}
         type={'artist'}
         handleData={handleData}
+        route={'/artists'}
       />
 
       {items && (
@@ -57,6 +61,6 @@ export const ArtistSearch = () => {
           ))}
         </Results>
       )}
-    </Container>
+    </>
   )
 }

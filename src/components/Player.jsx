@@ -1,11 +1,9 @@
 import { SpotifyPlaybackContext } from '@aeaton/react-spotify'
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { PlainLink } from './components'
-import { Controls } from './Controls'
 import { Image } from './Image'
-import { uriToID } from './lib'
-import { RelatedArtists } from './RelatedArtists'
+import { uriToID } from '../lib'
+import { PlainLink } from './Links'
 
 const Container = styled.div`
   min-height: 100vh;
@@ -22,6 +20,7 @@ export const Player = React.memo(({ uris }) => {
 
   useEffect(() => {
     if (player) {
+      console.log({ player })
       player.addListener('player_state_changed', state => {
         setState(state)
       })
@@ -30,17 +29,18 @@ export const Player = React.memo(({ uris }) => {
 
   useEffect(() => {
     if (player) {
+      console.log({ uris })
       play(uris)
     }
   }, [player, play, uris])
+
+  console.log(player, state)
 
   const track = state ? state.track_window.current_track : undefined
 
   return (
     <>
       <Container>
-        {state && <Controls player={player} state={state} />}
-
         {track && (
           <>
             <div
@@ -55,7 +55,7 @@ export const Player = React.memo(({ uris }) => {
                 to={`/tracks/${uriToID(track.uri)}`}
                 style={{
                   color: 'inherit',
-                  fontSize: 32,
+                  fontSize: 40,
                   textAlign: 'center',
                 }}
               >
@@ -76,7 +76,7 @@ export const Player = React.memo(({ uris }) => {
                   <PlainLink
                     to={`/artists/${uriToID(artist.uri)}`}
                     style={{
-                      fontSize: 20,
+                      fontSize: 24,
                     }}
                   >
                     {artist.name}
@@ -100,8 +100,6 @@ export const Player = React.memo(({ uris }) => {
           </>
         )}
       </Container>
-
-      {track && track.artists && <RelatedArtists artist={track.artists[0]} />}
     </>
   )
 })

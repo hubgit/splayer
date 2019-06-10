@@ -1,0 +1,83 @@
+import { useSpotifyClient } from '@aeaton/react-spotify'
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { dateToYear, uriToID } from '../lib'
+import { albumPath } from '../pages/AlbumPage'
+import { PopularityLink } from './Links'
+
+export const ArtistAlbums = ({ artist }) => {
+  const client = useSpotifyClient()
+
+  const [albums, setAlbums] = useState()
+
+  useEffect(() => {
+    if (client) {
+      client
+        .get(`/artists/${uriToID(artist.uri)}/albums`, {
+          include_groups: 'album,single', // TODO: not excluding compilations?
+          market: 'GB', // TODO: profile country
+          limit: 50, // TODO: pagination
+        })
+        .then(({ data: { items } }) => {
+          client
+            .get('/albums/', {
+              params: {
+                ids: items.map(item => uriToID(item.uri)).join(','),
+              },
+            })
+            .then(response => {
+              setAlbums(
+                response.data.albums //.sort((a, b) => b.popularity - a.popularity)
+              )
+            })
+        })
+    }
+  }, [artist, client, setAlbums])
+
+  if (!albums) {
+    return null
+  }
+
+  return (
+    <Container>
+      {albums.map(album => (
+        <AlbumLink
+          key={album.uri}
+          to={albumPath(album)}
+          popularity={album.popularity}
+        >
+          <span>{album.name}</span>{' '}
+          <Year>{dateToYear(album.release_date)}</Year>
+        </AlbumLink>
+      ))}
+    </Container>
+  )
+}
+
+const Year = styled.span`
+  font-size: 16px;
+  font-family: Roboto, sans-serif;
+  color: rgba(0, 0, 0, 0.25);
+  margin-left: 8px;
+
+  &:hover {
+    text-decoration: none;
+  }
+`
+
+const AlbumLink = styled(PopularityLink)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 8px;
+`
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  text-align: center;
+  min-height: 100vh;
+`
