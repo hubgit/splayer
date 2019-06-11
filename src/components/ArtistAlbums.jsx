@@ -5,6 +5,14 @@ import { dateToYear, uriToID } from '../lib'
 import { albumPath } from '../pages/AlbumPage'
 import { PopularityLink } from './Links'
 
+const filterAlbums = albums =>
+  albums.filter(
+    album =>
+      !albums.find(
+        a => a.name === album.name && a.popularity > album.popularity
+      )
+  )
+
 export const ArtistAlbums = ({ artist }) => {
   const client = useContext(SpotifyClientContext)
 
@@ -18,7 +26,7 @@ export const ArtistAlbums = ({ artist }) => {
             include_groups: 'album',
             market: 'from_token',
             limit: 50, // TODO: pagination
-          }
+          },
         })
         .then(({ data: { items } }) => {
           client
@@ -32,9 +40,7 @@ export const ArtistAlbums = ({ artist }) => {
               },
             })
             .then(response => {
-              setAlbums(
-                response.data.albums //.sort((a, b) => b.popularity - a.popularity)
-              )
+              setAlbums(filterAlbums(response.data.albums))
             })
         })
     }
