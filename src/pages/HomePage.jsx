@@ -1,14 +1,15 @@
 import { SpotifyPlaybackContext } from '@aeaton/react-spotify'
-import React, { useContext, useEffect } from 'react'
-import styled from 'styled-components'
-import { PlainLink } from '../components/Links'
+import { useContext, useEffect } from 'react'
+import { ColorContext, DEFAULT_BACKGROUND_COLOR } from '../providers/ColorProvider'
 
 export const HomePage = () => {
   const { player } = useContext(SpotifyPlaybackContext)
 
+  const { setBackgroundColor } = useContext(ColorContext)
+
   useEffect(() => {
-    document.body.background = 'white'
-  }, [])
+    setBackgroundColor(DEFAULT_BACKGROUND_COLOR)
+  }, [setBackgroundColor])
 
   useEffect(() => {
     if (player) {
@@ -16,19 +17,5 @@ export const HomePage = () => {
     }
   }, [player])
 
-  return (
-    <>
-      <HomeLink to={'/artists'}>Artists</HomeLink>
-      <HomeLink to={'/albums'}>Albums</HomeLink>
-      <HomeLink to={'/tracks'}>Tracks</HomeLink>
-    </>
-  )
+  return null
 }
-
-const HomeLink = styled(PlainLink)`
-  display: block;
-  text-align: center;
-  font-size: 32px;
-  padding: 8px;
-  margin: 16px;
-`

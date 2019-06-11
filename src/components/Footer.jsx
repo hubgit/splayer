@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
+import { ColorContext } from '../providers/ColorProvider'
 import { Auth } from './Auth'
 import { Controls } from './Controls'
 import { PlainLink } from './Links'
 
 export const Footer = () => {
+  const { backgroundColor } = useContext(ColorContext)
+
   const { search } = window.location
 
   return (
-    <Container>
+    <Container style={{ backgroundColor }}>
       <div>
         <NavLink to={`/artists${search}`}>ARTISTS</NavLink>
         <NavLink to={`/albums${search}`}>ALBUMS</NavLink>
@@ -30,7 +33,6 @@ const NavLink = styled(PlainLink)`
 
   &:hover {
     text-decoration: none;
-    background: black;
     color: white;
   }
 `
@@ -44,7 +46,6 @@ const Container = styled.nav`
   bottom: 0;
   left: 0;
   right: 0;
-  background: white;
   z-index: 1;
 
   > div {

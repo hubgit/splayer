@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { PopularityLink } from '../components/Links'
 import { Search } from '../components/Search'
-import { uriToID } from '../lib'
+import { scrollToTop, uriToID } from '../lib'
 
 const fields = ['track', 'artist', 'album', 'genre', 'label', 'year']
 
@@ -17,7 +17,7 @@ export const TracksPage = ({ location }) => {
   )
 
   useEffect(() => {
-    window.scrollTo(0, 0, { behavior: 'smooth' })
+    scrollToTop()
   }, [])
 
   return (

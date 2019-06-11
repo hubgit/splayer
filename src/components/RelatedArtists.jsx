@@ -1,15 +1,15 @@
-import { useSpotifyClient } from '@aeaton/react-spotify'
+import { SpotifyClientContext } from '@aeaton/react-spotify'
 import { CancelToken } from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { uriToID } from '../lib'
 import { PlainLink } from './Links'
 
 export const RelatedArtists = React.memo(
   ({ artist }) => {
-    const client = useSpotifyClient()
-
     const [artists, setArtists] = useState()
+
+    const client = useContext(SpotifyClientContext)
 
     useEffect(() => {
       if (client) {
@@ -18,15 +18,9 @@ export const RelatedArtists = React.memo(
         const source = CancelToken.source()
 
         client
-          .get(
-            `/artists/${artist.uri.replace(
-              /^spotify:artist:/,
-              ''
-            )}/related-artists`,
-            {
-              cancelToken: source.token,
-            }
-          )
+          .get(`/artists/${uriToID(artist.uri)}/related-artists`, {
+            cancelToken: source.token,
+          })
           .then(({ data: { artists } }) => {
             setArtists(artists)
           })
@@ -37,23 +31,21 @@ export const RelatedArtists = React.memo(
       }
     }, [client, artist, setArtists])
 
+    if (!artists) {
+      return null
+    }
+
     return (
       <Container>
-        {artists ? (
-          <div>
-            {artists.map(artist => (
-              <ArtistLink
-                key={artist.uri}
-                to={`/artists/${uriToID(artist.uri)}`}
-                popularity={artist.popularity}
-              >
-                {artist.name}
-              </ArtistLink>
-            ))}
-          </div>
-        ) : (
-          'Loading…'
-        )}
+        {artists.map(artist => (
+          <ArtistLink
+            key={artist.uri}
+            to={`/artists/${uriToID(artist.uri)}`}
+            popularity={artist.popularity}
+          >
+            {artist.name}
+          </ArtistLink>
+        ))}
       </Container>
     )
   },
@@ -66,17 +58,14 @@ const Container = styled.div`
   color: white;
   padding: 64px 32px;
   text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `
 
 const ArtistLink = styled(PlainLink)`
-  display: inline-flex;
+  display: inline-block;
   font-size: ${props => props.popularity}px;
-  padding: 0 1em;
+  padding: 4px 1em;
+  margin: 4px;
   white-space: nowrap;
-  align-items: center;
 
   &:hover {
     text-decoration: none;

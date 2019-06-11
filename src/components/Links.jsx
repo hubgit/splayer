@@ -11,5 +11,5 @@ export const PlainLink = styled(Link)`
 `
 
 export const PopularityLink = styled(PlainLink)`
-  font-size: ${props => props.popularity}px;
+  font-size: ${props => Math.max(props.popularity, 10)}px;
 `

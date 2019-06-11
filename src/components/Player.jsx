@@ -1,8 +1,8 @@
-import { SpotifyPlaybackContext } from '@aeaton/react-spotify'
-import React, { useContext, useEffect, useState } from 'react'
+import { SpotifyPlaybackContext, SpotifyStateContext } from '@aeaton/react-spotify'
+import React, { useContext, useEffect } from 'react'
 import styled from 'styled-components'
-import { Image } from './Image'
 import { uriToID } from '../lib'
+import { Image } from './Image'
 import { PlainLink } from './Links'
 
 const Container = styled.div`
@@ -15,26 +15,13 @@ const Container = styled.div`
 
 export const Player = React.memo(({ uris }) => {
   const { player, play } = useContext(SpotifyPlaybackContext)
-
-  const [state, setState] = useState()
-
-  useEffect(() => {
-    if (player) {
-      console.log({ player })
-      player.addListener('player_state_changed', state => {
-        setState(state)
-      })
-    }
-  }, [player])
+  const state = useContext(SpotifyStateContext)
 
   useEffect(() => {
     if (player) {
-      console.log({ uris })
       play(uris)
     }
   }, [player, play, uris])
-
-  console.log(player, state)
 
   const track = state ? state.track_window.current_track : undefined
 

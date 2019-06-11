@@ -1,33 +1,37 @@
-import { useSpotifyClient } from '@aeaton/react-spotify'
-import React, { useEffect, useState } from 'react'
+import {
+  SpotifyClientContext,
+  // SpotifyPlaybackContext,
+} from '@aeaton/react-spotify'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { PlainLink, PopularityLink } from '../components/Links'
 import { Player } from '../components/Player'
 import { RelatedArtists } from '../components/RelatedArtists'
-import { uriToID } from '../lib'
+import { scrollToTop, uriToID } from '../lib'
 
 export const albumPath = album => `/albums/${uriToID(album.uri)}`
 
 export const AlbumPage = React.memo(({ id }) => {
-  const client = useSpotifyClient()
-
-  // TODO: add read-private-country scope and add profile.country as country param
-  // const { profile } = useContext(SpotifyProfileContext)
-
   const [album, setAlbum] = useState()
   const [tracks, setTracks] = useState()
 
+  // const state = useContext(SpotifyPlaybackContext)
+
+  const client = useContext(SpotifyClientContext)
+
+  // const currentTrack = state ? state.track_window.current_track : undefined
+  const currentTrack = undefined
+
   useEffect(() => {
     if (client) {
-      // const country = 'GB' // TODO: see above
-
-      client.get(`/albums/${id}`).then(({ data: album }) => {
+      client.get(`/albums/${id}`, {
+        params: {
+          market: 'from_token'
+        }
+      }).then(({ data: album }) => {
         setAlbum(album)
 
         console.log(album)
-
-        // client
-        // .get(album.tracks.href)
 
         client
           .get('/tracks', {
@@ -45,18 +49,14 @@ export const AlbumPage = React.memo(({ id }) => {
   }, [client, id, setAlbum, setTracks])
 
   useEffect(() => {
-    window.scrollTo(0, 0, { behavior: 'smooth' })
+    scrollToTop()
   }, [id])
 
   if (!album || !tracks) {
     return null
   }
 
-  console.log({ album, tracks })
-
   const year = album.release_date.split('-').shift()
-  const artist = album.artists[0]
-  const genre = artist && artist.genres ? artist.genres[0] : ''
 
   return (
     <>
@@ -68,6 +68,7 @@ export const AlbumPage = React.memo(({ id }) => {
             key={track.uri}
             to={`/tracks/${uriToID(track.uri)}`}
             popularity={track.popularity}
+            currentTrack={currentTrack && currentTrack.uri === track.uri}
           >
             {track.name}
           </TrackLink>
@@ -89,6 +90,11 @@ const TrackLink = styled(PopularityLink)`
   margin: 4px;
   display: flex;
   text-align: center;
+  
+  &:before {
+    display: inline-block;
+    content: "${props => (props.currentTrack ? '>' : '')}";
+  }
 `
 
 const Info = styled.div`

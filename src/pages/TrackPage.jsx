@@ -1,33 +1,33 @@
-import { useSpotifyClient } from '@aeaton/react-spotify'
-import React, { useEffect, useState } from 'react'
+import { SpotifyClientContext } from '@aeaton/react-spotify'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { PlainLink } from '../components/Links'
 import { Player } from '../components/Player'
 import { RelatedArtists } from '../components/RelatedArtists'
+import { scrollToTop } from '../lib'
 import { albumPath } from './AlbumPage'
 
 export const TrackPage = React.memo(({ id }) => {
-  const client = useSpotifyClient()
-
-  // TODO: add read-private-country scope and add profile.country as country param
-  // const { profile } = useContext(SpotifyProfileContext)
+  const client = useContext(SpotifyClientContext)
 
   const [track, setTrack] = useState()
 
   useEffect(() => {
     if (client) {
-      // const country = 'GB' // TODO: see above
-
-      client.get(`/tracks/${id}`).then(({ data }) => {
-        setTrack(data)
-      })
+      client
+        .get(`/tracks/${id}`, {
+          params: {
+            market: 'from_token',
+          }
+        })
+        .then(({ data }) => {
+          setTrack(data)
+        })
     }
   }, [client, id, setTrack])
 
-  console.log(track)
-
   useEffect(() => {
-    window.scrollTo(0, 0)
+    scrollToTop()
   }, [id])
 
   if (!track) {
@@ -37,13 +37,13 @@ export const TrackPage = React.memo(({ id }) => {
   return (
     <>
       <Player uris={[track.uri]} />
-      {/*          {track.release_date && (
-            <div>{track.release_date.split('-').shift()}</div>
-          )}*/}
+
       {track.album && (
         <AlbumLink to={albumPath(track.album)}>{track.album.name}</AlbumLink>
       )}
+
       <RelatedArtists artist={track.artists[0]} />
+
       {track.label && (
         <LabelLink to={`/albums/?label=${track.label}`}>
           {track.label}

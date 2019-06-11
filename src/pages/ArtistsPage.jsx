@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { PlainLink } from '../components/Links'
+import { PopularityLink } from '../components/Links'
 import { Search } from '../components/Search'
-import { uriToID } from '../lib'
+import { scrollToTop, uriToID } from '../lib'
 
 const Heading = styled.div`
   font-size: 30px;
@@ -13,10 +13,6 @@ const Results = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
-
-const Result = styled(PlainLink)`
-  font-size: ${props => props.popularity}px;
   text-align: center;
 `
 
@@ -33,7 +29,7 @@ export const ArtistsPage = ({ location }) => {
   )
 
   useEffect(() => {
-    window.scrollTo(0, 0, { behavior: 'smooth' })
+    scrollToTop()
   }, [])
 
   return (
@@ -51,13 +47,13 @@ export const ArtistsPage = ({ location }) => {
       {items && (
         <Results>
           {items.map(artist => (
-            <Result
+            <PopularityLink
               key={artist.uri}
               to={`/artists/${uriToID(artist.uri)}`}
               popularity={artist.popularity}
             >
               {artist.name}
-            </Result>
+            </PopularityLink>
           ))}
         </Results>
       )}

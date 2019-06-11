@@ -1,12 +1,12 @@
-import { useSpotifyClient } from '@aeaton/react-spotify'
-import React, { useEffect, useState } from 'react'
+import { SpotifyClientContext } from '@aeaton/react-spotify'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { dateToYear, uriToID } from '../lib'
 import { albumPath } from '../pages/AlbumPage'
 import { PopularityLink } from './Links'
 
 export const ArtistAlbums = ({ artist }) => {
-  const client = useSpotifyClient()
+  const client = useContext(SpotifyClientContext)
 
   const [albums, setAlbums] = useState()
 
@@ -14,15 +14,21 @@ export const ArtistAlbums = ({ artist }) => {
     if (client) {
       client
         .get(`/artists/${uriToID(artist.uri)}/albums`, {
-          include_groups: 'album,single', // TODO: not excluding compilations?
-          market: 'GB', // TODO: profile country
-          limit: 50, // TODO: pagination
+          params: {
+            include_groups: 'album',
+            market: 'from_token',
+            limit: 50, // TODO: pagination
+          }
         })
         .then(({ data: { items } }) => {
           client
             .get('/albums/', {
               params: {
-                ids: items.map(item => uriToID(item.uri)).join(','),
+                ids: items
+                  .filter(item => item.album_type === 'album')
+                  .slice(0, 20)
+                  .map(item => uriToID(item.uri))
+                  .join(','),
               },
             })
             .then(response => {

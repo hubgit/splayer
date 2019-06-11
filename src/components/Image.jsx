@@ -1,8 +1,11 @@
 import * as Vibrant from 'node-vibrant'
-import React from 'react'
+import React, { useContext } from 'react'
+import { ColorContext } from '../providers/ColorProvider'
 
 export const Image = React.memo(
   ({ album, paused }) => {
+    const { setBackgroundColor } = useContext(ColorContext)
+
     const imageRef = React.createRef()
 
     if (!album.images) {
@@ -39,7 +42,7 @@ export const Image = React.memo(
           const vibrant = new Vibrant(imageRef.current)
 
           vibrant.getPalette().then(palette => {
-            document.body.style.backgroundColor = palette.LightVibrant.hex
+            setBackgroundColor(palette.LightVibrant.hex)
           })
         }}
       />

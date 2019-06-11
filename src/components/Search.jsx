@@ -1,8 +1,8 @@
-import { useSpotifyClient } from '@aeaton/react-spotify'
+import { SpotifyClientContext } from '@aeaton/react-spotify'
 import { Button, TextField } from '@material-ui/core'
 import { navigate } from '@reach/router'
 import { CancelToken } from 'axios'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 const ucfirst = text => text.substring(0, 1).toUpperCase() + text.substring(1)
@@ -13,7 +13,7 @@ export const Search = React.memo(
   ({ location, fields, type, limit, handleData, route }) => {
     const [query, setQuery] = useState({})
 
-    const client = useSpotifyClient()
+    const client = useContext(SpotifyClientContext)
 
     useEffect(() => {
       if (!client) {
@@ -52,7 +52,7 @@ export const Search = React.memo(
               q,
               type,
               limit: limit || 20,
-              market: 'GB',
+              market: 'from_token',
             },
             cancelToken: source.token,
           })

@@ -1,9 +1,9 @@
-import { useSpotifyClient } from '@aeaton/react-spotify'
-import React, { useCallback, useEffect, useState } from 'react'
+import { SpotifyClientContext } from '@aeaton/react-spotify'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { PopularityLink } from '../components/Links'
 import { Search } from '../components/Search'
-import { dateToYear, uriToID } from '../lib'
+import { dateToYear, scrollToTop, uriToID } from '../lib'
 import { albumPath } from './AlbumPage'
 
 const Heading = styled.div`
@@ -29,16 +29,20 @@ const Artist = styled.div`
   font-size: 16px;
 `
 
-const fields = ['album', 'artist', 'genre', 'label', 'year']
+const fields = ['album', 'artist', 'label', 'year']
 
 export const AlbumsPage = ({ location }) => {
   const [items, setItems] = useState()
 
-  const client = useSpotifyClient()
+  const client = useContext(SpotifyClientContext)
 
   const handleData = useCallback(
     data => {
-      const ids = data.albums.items.map(item => uriToID(item.uri)).join(',')
+      const ids = data.albums.items
+        .filter(item => item.album_type === 'album')
+        .slice(0, 20)
+        .map(item => uriToID(item.uri))
+        .join(',')
 
       client
         .get('/albums', {
@@ -52,7 +56,7 @@ export const AlbumsPage = ({ location }) => {
   )
 
   useEffect(() => {
-    window.scrollTo(0, 0, { behavior: 'smooth' })
+    scrollToTop()
   }, [])
 
   return (
@@ -65,6 +69,7 @@ export const AlbumsPage = ({ location }) => {
         type={'album'}
         handleData={handleData}
         route={'/albums'}
+        limit={50}
       />
 
       {items && (

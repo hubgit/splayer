@@ -1,29 +1,27 @@
-import { useSpotifyClient } from '@aeaton/react-spotify'
-import React, { useEffect, useState } from 'react'
+import { SpotifyClientContext } from '@aeaton/react-spotify'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ArtistAlbums } from '../components/ArtistAlbums'
 import { PlainLink } from '../components/Links'
 import { Player } from '../components/Player'
 import { RelatedArtists } from '../components/RelatedArtists'
+import { scrollToTop } from '../lib'
 
 export const ArtistPage = ({ id }) => {
-  const client = useSpotifyClient()
-
-  // TODO: add read-private-country scope and add profile.country as country param
-  // const { profile } = useContext(SpotifyProfileContext)
-
   const [uris, setURIs] = useState()
   const [artist, setArtist] = useState()
 
+  const client = useContext(SpotifyClientContext)
+
   useEffect(() => {
     if (client) {
-      const country = 'GB' // TODO: see above
-
       client.get(`/artists/${id}`).then(({ data }) => setArtist(data))
 
       client
         .get(`/artists/${id}/top-tracks`, {
-          params: { country },
+          params: {
+            market: 'from_token',
+          },
         })
         .then(response => {
           setURIs(response.data.tracks.map(track => track.uri))
@@ -32,7 +30,7 @@ export const ArtistPage = ({ id }) => {
   }, [client, id, setArtist, setURIs])
 
   useEffect(() => {
-    window.scrollTo(0, 0)
+    scrollToTop()
   }, [id])
 
   if (!artist) {
@@ -42,16 +40,6 @@ export const ArtistPage = ({ id }) => {
   return (
     <>
       {uris && <Player uris={uris} />}
-      {/* <div
-        style={{
-          fontSize: 64,
-          textDecoration: 'center',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        {artist.name}
-      </div>*/}
 
       <ArtistAlbums artist={artist} />
 
