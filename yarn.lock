@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@aeaton/react-spotify@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/@aeaton/react-spotify/-/react-spotify-0.0.4.tgz#fb1f1770c2f06489041fe1334d4df8a87b07ed65"
-  integrity sha512-UWaFU+pOCu1XSNPnncjw60a0y5r9FOjYsuH7TSoM8wtaVjGIhg1fzHzqty4SuK4AoMBvKq1z4OoQOQYr+Kleuw==
+"@aeaton/react-spotify@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.npmjs.org/@aeaton/react-spotify/-/react-spotify-0.0.5.tgz#6b627f30094a741765d20937f907b62fc83beb94"
+  integrity sha512-2Yzh8NYtyq82kMDurafolRo6kQ93HyL15O12MNLDCdtaYY2PDWDxB+i8P/2Ejytc/8QbJ/Rvfm7BYPMn5tml7Q==
   dependencies:
     "@types/spotify-api" "^0.0.1"
 
