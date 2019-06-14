@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react'
 
-export const DEFAULT_BACKGROUND_COLOR = 'rgb(243, 190, 143)'
+export const DEFAULT_BACKGROUND_COLOR = 'white'
 
 export const ColorContext = createContext({})
 

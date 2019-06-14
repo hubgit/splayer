@@ -122,6 +122,7 @@ const Tracks = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: start;
   padding: 32px;
+  min-height: 100vh;
+  justify-content: start;
 `

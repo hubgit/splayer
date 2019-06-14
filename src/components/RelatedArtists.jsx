@@ -37,11 +37,13 @@ export const RelatedArtists = React.memo(
 
     return (
       <Container>
-        {artists.map(artist => (
-          <RelatedArtistLink key={artist.uri} artist={artist}>
-            {artist.name}
-          </RelatedArtistLink>
-        ))}
+        <div>
+          {artists.map(artist => (
+            <RelatedArtistLink key={artist.uri} artist={artist}>
+              {artist.name}
+            </RelatedArtistLink>
+          ))}
+        </div>
       </Container>
     )
   },
@@ -54,6 +56,9 @@ const Container = styled.div`
   color: white;
   padding: 64px 32px;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 const RelatedArtistLink = styled(ArtistLink)`
