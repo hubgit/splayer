@@ -46,6 +46,7 @@ export const AlbumSearch = ({ results }) => {
 
       client
         .get('/albums', {
+          market: 'from_token',
           params: {
             ids,
           },

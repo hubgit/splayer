@@ -37,6 +37,7 @@ export const AlbumPage = React.memo(({ id }) => {
           client
             .get('/tracks', {
               params: {
+                market: 'from_token',
                 ids: album.tracks.items
                   .map(track => uriToID(track.uri))
                   .join(','),

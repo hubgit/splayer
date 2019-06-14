@@ -32,6 +32,7 @@ export const ArtistAlbums = ({ artist, isPopover }) => {
           client
             .get('/albums/', {
               params: {
+                market: 'from_token',
                 ids: response.data.items
                   .filter(item => item.album_type === 'album')
                   .slice(0, 20)
