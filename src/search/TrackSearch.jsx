@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { PopularityLink } from '../components/Links'
-import { Search } from '../components/Search'
-import { scrollToTop, uriToID } from '../lib'
+import { scrollToTop } from '../lib'
+import { trackPath } from '../pages/TrackPage'
+import { SearchForm } from '../search/SearchForm'
+import { SearchSplit } from './SearchSplit'
 
 const fields = ['track', 'artist', 'album', 'genre', 'label', 'year']
 
-export const TracksPage = ({ location }) => {
+export const TrackSearch = ({ location }) => {
   const [items, setItems] = useState()
 
   const handleData = useCallback(
@@ -21,23 +23,25 @@ export const TracksPage = ({ location }) => {
   }, [])
 
   return (
-    <>
-      <Heading>Tracks</Heading>
+    <SearchSplit>
+      <div>
+        <Heading>Tracks</Heading>
 
-      <Search
-        location={location}
-        fields={fields}
-        type={'track'}
-        handleData={handleData}
-        route={'/tracks'}
-      />
+        <SearchForm
+          location={location}
+          fields={fields}
+          type={'track'}
+          handleData={handleData}
+          route={'/tracks'}
+        />
+      </div>
 
       {items && (
         <Results>
           {items.map(track => (
             <Result
               key={track.uri}
-              to={`/tracks/${uriToID(track.uri)}`}
+              to={trackPath(track)}
               popularity={track.popularity}
             >
               {track.name}
@@ -48,7 +52,7 @@ export const TracksPage = ({ location }) => {
           ))}
         </Results>
       )}
-    </>
+    </SearchSplit>
   )
 }
 

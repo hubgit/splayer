@@ -1,56 +1,61 @@
-import {
-  SpotifyClientContext,
-  // SpotifyPlaybackContext,
-} from '@aeaton/react-spotify'
+import { SpotifyClientContext } from '@aeaton/react-spotify'
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { PlainLink, PopularityLink } from '../components/Links'
+import { PopularityLink } from '../components/Links'
 import { Player } from '../components/Player'
 import { RelatedArtists } from '../components/RelatedArtists'
 import { scrollToTop, uriToID } from '../lib'
+import { SearchContext } from '../providers/SearchProvider'
+import { AlbumSearchLink } from '../search/AlbumSearch'
+import { trackPath } from './TrackPage'
 
 export const albumPath = album => `/albums/${uriToID(album.uri)}`
 
 export const AlbumPage = React.memo(({ id }) => {
   const [album, setAlbum] = useState()
   const [tracks, setTracks] = useState()
+  const [uris, setURIs] = useState()
 
   // const state = useContext(SpotifyPlaybackContext)
 
   const client = useContext(SpotifyClientContext)
+  const { closeSearch } = useContext(SearchContext)
 
   // const currentTrack = state ? state.track_window.current_track : undefined
   const currentTrack = undefined
 
   useEffect(() => {
     if (client) {
-      client.get(`/albums/${id}`, {
-        params: {
-          market: 'from_token'
-        }
-      }).then(({ data: album }) => {
-        setAlbum(album)
+      client
+        .get(`/albums/${id}`, {
+          params: {
+            market: 'from_token',
+          },
+        })
+        .then(({ data: album }) => {
+          setAlbum(album)
 
-        console.log(album)
-
-        client
-          .get('/tracks', {
-            params: {
-              ids: album.tracks.items
-                .map(track => uriToID(track.uri))
-                .join(','),
-            },
-          })
-          .then(response => {
-            setTracks(response.data.tracks)
-          })
-      })
+          client
+            .get('/tracks', {
+              params: {
+                ids: album.tracks.items
+                  .map(track => uriToID(track.uri))
+                  .join(','),
+              },
+            })
+            .then(response => {
+              const { tracks } = response.data
+              setTracks(tracks)
+              setURIs(tracks.map(track => track.uri))
+            })
+        })
     }
   }, [client, id, setAlbum, setTracks])
 
   useEffect(() => {
+    closeSearch()
     scrollToTop()
-  }, [id])
+  }, [id, closeSearch])
 
   if (!album || !tracks) {
     return null
@@ -60,13 +65,13 @@ export const AlbumPage = React.memo(({ id }) => {
 
   return (
     <>
-      <Player uris={tracks.map(track => track.uri)} />
+      <Player uris={uris} />
 
       <Tracks>
         {tracks.map(track => (
           <TrackLink
             key={track.uri}
-            to={`/tracks/${uriToID(track.uri)}`}
+            to={trackPath(track)}
             popularity={track.popularity}
             currentTrack={currentTrack && currentTrack.uri === track.uri}
           >
@@ -76,9 +81,9 @@ export const AlbumPage = React.memo(({ id }) => {
       </Tracks>
 
       <Info>
-        <PlainLink to={`/albums?label=${album.label}&year=${year}`}>
+        <AlbumSearchLink query={{ label: album.label, year }}>
           {album.label} - {year}
-        </PlainLink>
+        </AlbumSearchLink>
       </Info>
 
       <RelatedArtists artist={album.artists[0]} />
@@ -112,7 +117,7 @@ const Tracks = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px;
+  padding: 32px;
   min-height: 100vh;
   justify-content: start;
 `

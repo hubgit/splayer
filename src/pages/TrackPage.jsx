@@ -4,13 +4,18 @@ import styled from 'styled-components'
 import { PlainLink } from '../components/Links'
 import { Player } from '../components/Player'
 import { RelatedArtists } from '../components/RelatedArtists'
-import { scrollToTop } from '../lib'
+import { scrollToTop, uriToID } from '../lib'
+import { SearchContext } from '../providers/SearchProvider'
 import { albumPath } from './AlbumPage'
 
-export const TrackPage = React.memo(({ id }) => {
-  const client = useContext(SpotifyClientContext)
+export const trackPath = track => `/tracks/${uriToID(track.uri)}`
 
+export const TrackPage = React.memo(({ id }) => {
   const [track, setTrack] = useState()
+  const [uris, setURIs] = useState()
+
+  const client = useContext(SpotifyClientContext)
+  const { closeSearch } = useContext(SearchContext)
 
   useEffect(() => {
     if (client) {
@@ -18,17 +23,19 @@ export const TrackPage = React.memo(({ id }) => {
         .get(`/tracks/${id}`, {
           params: {
             market: 'from_token',
-          }
+          },
         })
         .then(({ data }) => {
           setTrack(data)
+          setURIs([data.uri])
         })
     }
-  }, [client, id, setTrack])
+  }, [client, id])
 
   useEffect(() => {
+    closeSearch()
     scrollToTop()
-  }, [id])
+  }, [id, closeSearch])
 
   if (!track) {
     return null
@@ -36,7 +43,7 @@ export const TrackPage = React.memo(({ id }) => {
 
   return (
     <>
-      <Player uris={[track.uri]} />
+      <Player uris={uris} />
 
       {track.album && (
         <AlbumLink to={albumPath(track.album)}>{track.album.name}</AlbumLink>

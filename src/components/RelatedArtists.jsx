@@ -3,6 +3,7 @@ import { CancelToken } from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { uriToID } from '../lib'
+import { artistPath } from '../pages/ArtistPage'
 import { PlainLink } from './Links'
 
 export const RelatedArtists = React.memo(
@@ -40,7 +41,7 @@ export const RelatedArtists = React.memo(
         {artists.map(artist => (
           <ArtistLink
             key={artist.uri}
-            to={`/artists/${uriToID(artist.uri)}`}
+            to={artistPath(artist)}
             popularity={artist.popularity}
           >
             {artist.name}

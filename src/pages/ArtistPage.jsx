@@ -2,16 +2,20 @@ import { SpotifyClientContext } from '@aeaton/react-spotify'
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ArtistAlbums } from '../components/ArtistAlbums'
-import { PlainLink } from '../components/Links'
 import { Player } from '../components/Player'
 import { RelatedArtists } from '../components/RelatedArtists'
-import { scrollToTop } from '../lib'
+import { scrollToTop, uriToID } from '../lib'
+import { SearchContext } from '../providers/SearchProvider'
+import { ArtistSearchLink } from '../search/ArtistSearch'
+
+export const artistPath = artist => `/artists/${uriToID(artist.uri)}`
 
 export const ArtistPage = ({ id }) => {
   const [uris, setURIs] = useState()
   const [artist, setArtist] = useState()
 
   const client = useContext(SpotifyClientContext)
+  const { closeSearch } = useContext(SearchContext)
 
   useEffect(() => {
     if (client) {
@@ -30,8 +34,9 @@ export const ArtistPage = ({ id }) => {
   }, [client, id, setArtist, setURIs])
 
   useEffect(() => {
+    closeSearch()
     scrollToTop()
-  }, [id])
+  }, [id, closeSearch])
 
   if (!artist) {
     return null
@@ -48,7 +53,7 @@ export const ArtistPage = ({ id }) => {
           {artist.genres.map((genre, index) => (
             <span key={index}>
               {index > 0 && ', '}
-              <PlainLink to={`/artists?genre=${genre}`}>{genre}</PlainLink>
+              <ArtistSearchLink query={{ genre }}>{genre}</ArtistSearchLink>
             </span>
           ))}
         </Genres>

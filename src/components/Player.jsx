@@ -1,7 +1,8 @@
 import { SpotifyPlaybackContext, SpotifyStateContext } from '@aeaton/react-spotify'
 import React, { useContext, useEffect } from 'react'
 import styled from 'styled-components'
-import { uriToID } from '../lib'
+import { artistPath } from '../pages/ArtistPage'
+import { trackPath } from '../pages/TrackPage'
 import { Image } from './Image'
 import { PlainLink } from './Links'
 
@@ -39,7 +40,7 @@ export const Player = React.memo(({ uris }) => {
               }}
             >
               <PlainLink
-                to={`/tracks/${uriToID(track.uri)}`}
+                to={trackPath(track)}
                 style={{
                   color: 'inherit',
                   fontSize: 40,
@@ -61,7 +62,7 @@ export const Player = React.memo(({ uris }) => {
               {track.artists.map(artist => (
                 <div key={artist.uri}>
                   <PlainLink
-                    to={`/artists/${uriToID(artist.uri)}`}
+                    to={artistPath(artist)}
                     style={{
                       fontSize: 24,
                     }}

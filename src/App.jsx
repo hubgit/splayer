@@ -5,12 +5,9 @@ import styled from 'styled-components'
 import { Footer } from './components/Footer'
 import { Login } from './components/Login'
 import { AlbumPage } from './pages/AlbumPage'
-import { AlbumsPage } from './pages/AlbumsPage'
 import { ArtistPage } from './pages/ArtistPage'
-import { ArtistsPage } from './pages/ArtistsPage'
 import { HomePage } from './pages/HomePage'
 import { TrackPage } from './pages/TrackPage'
-import { TracksPage } from './pages/TracksPage'
 import { ColorContext } from './providers/ColorProvider'
 
 export const App = () => {
@@ -31,11 +28,8 @@ export const App = () => {
 
       <Router>
         <HomePage path={'/'} />
-        <ArtistsPage path={'/artists'} />
         <ArtistPage path={'/artists/:id'} />
-        <AlbumsPage path={'/albums'} />
         <AlbumPage path={'/albums/:id'} />
-        <TracksPage path={'/tracks'} />
         <TrackPage path={'/tracks/:id'} />
       </Router>
 

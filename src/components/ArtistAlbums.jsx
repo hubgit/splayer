@@ -5,6 +5,7 @@ import { dateToYear, uriToID } from '../lib'
 import { albumPath } from '../pages/AlbumPage'
 import { PopularityLink } from './Links'
 
+// TODO: sum popularities
 const filterAlbums = albums =>
   albums.filter(
     album =>
