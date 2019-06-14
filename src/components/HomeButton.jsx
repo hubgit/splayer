@@ -1,5 +1,5 @@
-import { IconButton } from '@material-ui/core/index'
-import { HomeRounded } from '@material-ui/icons/index'
+import { IconButton } from '@material-ui/core'
+import { HomeRounded } from '@material-ui/icons'
 import { navigate } from '@reach/router'
 import React, { useCallback, useContext } from 'react'
 import { SearchContext } from '../providers/SearchProvider'
