@@ -20,6 +20,12 @@ export const SearchProvider = ({ children }) => {
         throw new Error('No client yet!')
       }
 
+      if (!query) {
+        setQuery({})
+        setResults({})
+        return
+      }
+
       if (source) {
         source.cancel()
       }
@@ -65,7 +71,6 @@ export const SearchProvider = ({ children }) => {
 
   const closeSearch = useCallback(() => {
     setSearchOpen(false)
-    setResults({})
   }, [])
 
   const toggleSearch = useCallback(

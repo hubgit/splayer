@@ -9,7 +9,12 @@ render(
   <SpotifyProvider
     clientID={'00e31e7317d64ebe88d970a469de42d7'}
     redirectURI={window.location.origin}
-    scopes={['streaming', 'user-read-private']}
+    scopes={[
+      'streaming',
+      'user-read-private',
+      'user-library-read',
+      'user-library-modify',
+    ]}
   >
     <SpotifyPlaybackProvider deviceName={'splayer'}>
       <ColorProvider>

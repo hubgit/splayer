@@ -11,8 +11,8 @@ export const SearchForm = React.memo(({ fields, type, limit }) => {
   const { query = {} } = queryData
 
   const reset = useCallback(() => {
-    setQuery({})
-  }, [setQuery])
+    search(null)
+  }, [search])
 
   const submit = useCallback(
     event => {
@@ -42,7 +42,7 @@ export const SearchForm = React.memo(({ fields, type, limit }) => {
       {fields.map((field, index) => (
         <TextField
           key={field}
-          autoFocus={index === 0 && type === 'artist'}
+          autoFocus={index === 0}
           label={ucfirst(field)}
           value={query[field] || ''}
           onChange={handleChange(field)}
