@@ -1,10 +1,21 @@
-import { SpotifyPlaybackContext, SpotifyStateContext } from '@aeaton/react-spotify'
+import {
+  SpotifyPlaybackContext,
+  SpotifyStateContext,
+} from '@aeaton/react-spotify'
 import React, { useContext, useEffect } from 'react'
+import { Helmet } from 'react-helmet'
 import styled from 'styled-components'
 import { artistPath } from '../pages/ArtistPage'
 import { trackPath } from '../pages/TrackPage'
 import { Image } from './Image'
 import { PlainLink } from './Links'
+
+const buildTitle = track =>
+  [
+    track.artists.map(artist => artist.name).join(', '),
+    track.album.name,
+    track.name,
+  ].join(' / ')
 
 const Container = styled.div`
   min-height: 100vh;
@@ -28,6 +39,10 @@ export const Player = React.memo(({ uris }) => {
 
   return (
     <>
+      <Helmet>
+        <title>Splayer: {track ? buildTitle(track) : ''}</title>
+      </Helmet>
+
       <Container>
         {track && (
           <>

@@ -10,7 +10,6 @@ import { uriToID } from '../lib'
 export const SaveButton = () => {
   const [hasAlbum, setHasAlbum] = useState()
   const [saving, setSaving] = useState(false)
-  const [saved, setSaved] = useState(false)
   const [error, setError] = useState()
   const [track, setTrack] = useState()
 
@@ -43,14 +42,13 @@ export const SaveButton = () => {
 
   const saveAlbum = useCallback(() => {
     setSaving(true)
-    setSaved(false)
     setError(undefined)
 
     client
       .put('/me/albums', [uriToID(track.album.uri)])
       .then(() => {
         setSaving(false)
-        setSaved(true)
+        setHasAlbum(true)
       })
       .catch(error => {
         setSaving(false)
@@ -59,10 +57,6 @@ export const SaveButton = () => {
   }, [client, track])
 
   const statusIcon = useCallback(() => {
-    if (saved) {
-      return <CheckRounded />
-    }
-
     if (error) {
       return <SyncRounded color={'error'} />
     }
@@ -72,7 +66,7 @@ export const SaveButton = () => {
     }
 
     return <SaveRounded />
-  }, [error, saved, saving])
+  }, [error, saving])
 
   if (!state || !client || !track || !track.album || !track.album.uri) {
     return null
@@ -82,9 +76,11 @@ export const SaveButton = () => {
     return null
   }
 
-  return (
-    <IconButton disabled={hasAlbum} onClick={saveAlbum}>
-      {statusIcon()}
+  return hasAlbum ? (
+    <IconButton disabled={true}>
+      <CheckRounded />
     </IconButton>
+  ) : (
+    <IconButton onClick={saveAlbum}>{statusIcon()}</IconButton>
   )
 }
