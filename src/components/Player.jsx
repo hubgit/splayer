@@ -6,6 +6,7 @@ import React, { useContext, useLayoutEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import styled from 'styled-components'
 import { ArtistLink } from '../links/ArtistLink'
+import { artistPath } from '../pages/ArtistPage'
 import { trackPath } from '../pages/TrackPage'
 import { TrackContext } from '../providers/TrackProvider'
 import { Image } from './Image'
@@ -57,7 +58,6 @@ export const Player = React.memo(({ uris }) => {
               <PlainLink
                 to={trackPath(track)}
                 style={{
-                  color: 'inherit',
                   fontSize: 32,
                   textAlign: 'center',
                 }}
@@ -76,7 +76,15 @@ export const Player = React.memo(({ uris }) => {
             >
               {track.artists.map(artist => (
                 <div key={artist.uri}>
-                  <ArtistLink artist={artist}>{artist.name}</ArtistLink>
+                  <PlainLink
+                    to={artistPath(artist)}
+                    style={{
+                      fontSize: 24,
+                      textAlign: 'center',
+                    }}
+                  >
+                    {artist.name}
+                  </PlainLink>
                 </div>
               ))}
             </div>
