@@ -39,7 +39,7 @@ export const App = () => {
 }
 
 const Container = styled.div`
-  padding-top: 32px;
+  padding-top: 48px;
   padding-bottom: 48px;
   min-height: 100vh;
 `

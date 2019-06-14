@@ -1,17 +1,18 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
+import Tabs from '@material-ui/core/Tabs'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { SearchContext } from '../providers/SearchProvider'
 import { AlbumSearch } from './AlbumSearch'
 import { ArtistSearch } from './ArtistSearch'
+import { TrackSearch } from './TrackSearch'
 
 const searchTypes = ['artist', 'album', 'track']
 
 export const SearchModal = () => {
   const [active, setActive] = useState(0)
 
-  const { results, query, setQuery } = useContext(SearchContext)
+  const { results, query, search } = useContext(SearchContext)
 
   useEffect(() => {
     if (query && query.type) {
@@ -23,12 +24,12 @@ export const SearchModal = () => {
   const handleChange = useCallback(
     (event, value) => {
       setActive(value)
-      setQuery({
+      search({
         ...query,
         type: searchTypes[value],
       })
     },
-    [query, setQuery]
+    [query, search]
   )
 
   return (
@@ -47,6 +48,7 @@ export const SearchModal = () => {
 
       {active === 0 && <ArtistSearch results={results} />}
       {active === 1 && <AlbumSearch results={results} />}
+      {active === 2 && <TrackSearch results={results} />}
     </Container>
   )
 }

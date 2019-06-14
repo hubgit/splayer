@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { ColorContext } from '../providers/ColorProvider'
-import { HomeButton } from '../search/HomeButton'
+import { HomeButton } from './HomeButton'
 import { SaveButton } from '../search/SaveButton'
 import { SearchButton } from '../search/SearchButton'
 import { Auth } from './Auth'

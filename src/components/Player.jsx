@@ -2,11 +2,12 @@ import {
   SpotifyPlaybackContext,
   SpotifyStateContext,
 } from '@aeaton/react-spotify'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useLayoutEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import styled from 'styled-components'
-import { artistPath } from '../pages/ArtistPage'
+import { ArtistLink } from '../links/ArtistLink'
 import { trackPath } from '../pages/TrackPage'
+import { TrackContext } from '../providers/TrackProvider'
 import { Image } from './Image'
 import { PlainLink } from './Links'
 
@@ -28,14 +29,13 @@ const Container = styled.div`
 export const Player = React.memo(({ uris }) => {
   const { player, play } = useContext(SpotifyPlaybackContext)
   const state = useContext(SpotifyStateContext)
+  const track = useContext(TrackContext)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (player) {
       play(uris)
     }
   }, [player, play, uris])
-
-  const track = state ? state.track_window.current_track : undefined
 
   return (
     <>
@@ -58,7 +58,7 @@ export const Player = React.memo(({ uris }) => {
                 to={trackPath(track)}
                 style={{
                   color: 'inherit',
-                  fontSize: 40,
+                  fontSize: 32,
                   textAlign: 'center',
                 }}
               >
@@ -76,14 +76,7 @@ export const Player = React.memo(({ uris }) => {
             >
               {track.artists.map(artist => (
                 <div key={artist.uri}>
-                  <PlainLink
-                    to={artistPath(artist)}
-                    style={{
-                      fontSize: 24,
-                    }}
-                  >
-                    {artist.name}
-                  </PlainLink>
+                  <ArtistLink artist={artist}>{artist.name}</ArtistLink>
                 </div>
               ))}
             </div>

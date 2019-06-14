@@ -1,57 +1,34 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { PopularityLink } from '../components/Links'
-import { scrollToTop } from '../lib'
-import { trackPath } from '../pages/TrackPage'
+import { TrackLink } from '../links/TrackLink'
 import { SearchForm } from '../search/SearchForm'
 import { SearchSplit } from './SearchSplit'
 
 const fields = ['track', 'artist', 'album', 'genre', 'label', 'year']
 
-export const TrackSearch = ({ location }) => {
-  const [items, setItems] = useState()
-
-  const handleData = useCallback(
-    data => {
-      setItems(data.tracks.items)
-    },
-    [setItems]
-  )
-
-  useEffect(() => {
-    scrollToTop()
-  }, [])
-
+export const TrackSearch = ({ results }) => {
   return (
     <SearchSplit>
       <div>
         <Heading>Tracks</Heading>
 
-        <SearchForm
-          location={location}
-          fields={fields}
-          type={'track'}
-          handleData={handleData}
-          route={'/tracks'}
-        />
+        <SearchForm fields={fields} type={'track'} />
       </div>
 
-      {items && (
+      <div>
         <Results>
-          {items.map(track => (
-            <Result
-              key={track.uri}
-              to={trackPath(track)}
-              popularity={track.popularity}
-            >
-              {track.name}
-              <Artist>
-                {track.artists.map(artist => artist.name).join(', ')}
-              </Artist>
-            </Result>
-          ))}
+          {results &&
+            results.track &&
+            results.track.tracks.items.map(track => (
+              <TrackLink key={track.uri} track={track}>
+                {track.name}
+                <Artists>
+                  {track.artists.map(artist => artist.name).join(', ')}
+                </Artists>
+              </TrackLink>
+            ))}
         </Results>
-      )}
+      </div>
     </SearchSplit>
   )
 }
@@ -67,12 +44,7 @@ const Results = styled.div`
   align-items: center;
 `
 
-const Result = styled(PopularityLink)`
-  text-align: center;
-  margin: 8px;
-`
-
-const Artist = styled.div`
+const Artists = styled.div`
   font-size: 16px;
   color: #777;
 `

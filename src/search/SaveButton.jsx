@@ -1,33 +1,28 @@
-import {
-  SpotifyClientContext,
-  SpotifyStateContext,
-} from '@aeaton/react-spotify'
+import { SpotifyClientContext } from '@aeaton/react-spotify'
 import { IconButton } from '@material-ui/core'
 import { CheckRounded, SaveRounded, SyncRounded } from '@material-ui/icons'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { uriToID } from '../lib'
+import { TrackContext } from '../providers/TrackProvider'
 
 export const SaveButton = () => {
   const [hasAlbum, setHasAlbum] = useState()
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState()
-  const [track, setTrack] = useState()
 
   const client = useContext(SpotifyClientContext)
-  const state = useContext(SpotifyStateContext)
+  const track = useContext(TrackContext)
+
+  const trackUri = track && track.album ? track.album.uri : undefined
 
   useEffect(() => {
-    const track = state ? state.track_window.current_track : undefined
-
-    setTrack(track)
-
     setHasAlbum(undefined)
 
-    if (track && track.album && track.album.uri) {
+    if (trackUri) {
       client
         .get('/me/albums/contains', {
           params: {
-            ids: [uriToID(track.album.uri)].join(','),
+            ids: [uriToID(trackUri)].join(','),
           },
         })
         .then(response => {
@@ -38,7 +33,7 @@ export const SaveButton = () => {
     } else {
       setHasAlbum(false)
     }
-  }, [client, state])
+  }, [client, trackUri])
 
   const saveAlbum = useCallback(() => {
     setSaving(true)
@@ -68,7 +63,7 @@ export const SaveButton = () => {
     return <SaveRounded />
   }, [error, saving])
 
-  if (!state || !client || !track || !track.album || !track.album.uri) {
+  if (!client || !track || !track.album || !track.album.uri) {
     return null
   }
 

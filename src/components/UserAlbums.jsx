@@ -2,8 +2,7 @@ import { SpotifyClientContext } from '@aeaton/react-spotify'
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { dateToYear } from '../lib'
-import { albumPath } from '../pages/AlbumPage'
-import { PopularityLink } from './Links'
+import { AlbumLink } from '../links/AlbumLink'
 
 export const UserAlbums = () => {
   const client = useContext(SpotifyClientContext)
@@ -32,11 +31,7 @@ export const UserAlbums = () => {
   return (
     <Container>
       {albums.map(album => (
-        <AlbumLink
-          key={album.uri}
-          to={albumPath(album)}
-          popularity={album.popularity}
-        >
+        <AlbumLink key={album.uri} album={album}>
           <div>{album.name}</div>
           <Metadata>
             {album.artists.map(artist => artist.name).join(', ')}
@@ -54,14 +49,6 @@ const Metadata = styled.div`
   font-family: Roboto, sans-serif;
   color: rgba(0, 0, 0, 0.25);
   margin-left: 8px;
-`
-
-const AlbumLink = styled(PopularityLink)`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 8px;
 `
 
 const Container = styled.div`

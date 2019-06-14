@@ -4,6 +4,7 @@ import { render } from 'react-dom'
 import { App } from './App'
 import { ColorProvider } from './providers/ColorProvider'
 import { SearchProvider } from './providers/SearchProvider'
+import { TrackProvider } from './providers/TrackProvider'
 
 render(
   <SpotifyProvider
@@ -17,11 +18,13 @@ render(
     ]}
   >
     <SpotifyPlaybackProvider deviceName={'splayer'}>
-      <ColorProvider>
-        <SearchProvider>
-          <App />
-        </SearchProvider>
-      </ColorProvider>
+      <TrackProvider>
+        <ColorProvider>
+          <SearchProvider>
+            <App />
+          </SearchProvider>
+        </ColorProvider>
+      </TrackProvider>
     </SpotifyPlaybackProvider>
   </SpotifyProvider>,
   document.getElementById('root')

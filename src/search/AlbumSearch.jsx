@@ -1,9 +1,8 @@
 import { SpotifyClientContext } from '@aeaton/react-spotify'
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { PopularityLink } from '../components/Links'
 import { dateToYear, uriToID } from '../lib'
-import { albumPath } from '../pages/AlbumPage'
+import { AlbumLink } from '../links/AlbumLink'
 import { SearchForm } from '../search/SearchForm'
 import { SearchLink } from './SearchLink'
 import { SearchSplit } from './SearchSplit'
@@ -17,12 +16,6 @@ const Results = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
-
-const Result = styled(PopularityLink)`
-  text-align: center;
-  margin: 8px;
-  display: block;
 `
 
 const Artist = styled.div`
@@ -73,11 +66,7 @@ export const AlbumSearch = ({ results }) => {
         <Results>
           {items &&
             items.map(album => (
-              <Result
-                key={album.uri}
-                to={albumPath(album)}
-                popularity={album.popularity}
-              >
+              <AlbumLink key={album.uri} album={album}>
                 <div>{album.name}</div>
 
                 <Artist>
@@ -85,7 +74,7 @@ export const AlbumSearch = ({ results }) => {
                   <span> / </span>
                   {album.release_date && dateToYear(album.release_date)}
                 </Artist>
-              </Result>
+              </AlbumLink>
             ))}
         </Results>
       </div>

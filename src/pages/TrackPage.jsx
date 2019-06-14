@@ -5,8 +5,8 @@ import { PlainLink } from '../components/Links'
 import { Player } from '../components/Player'
 import { RelatedArtists } from '../components/RelatedArtists'
 import { scrollToTop, uriToID } from '../lib'
+import { AlbumLink } from '../links/AlbumLink'
 import { SearchContext } from '../providers/SearchProvider'
-import { albumPath } from './AlbumPage'
 
 export const trackPath = track => `/tracks/${uriToID(track.uri)}`
 
@@ -46,7 +46,11 @@ export const TrackPage = React.memo(({ id }) => {
       <Player uris={uris} />
 
       {track.album && (
-        <AlbumLink to={albumPath(track.album)}>{track.album.name}</AlbumLink>
+        <AlbumContainer>
+          <AlbumLink album={track.album} popularity={32}>
+            {track.album.name}
+          </AlbumLink>
+        </AlbumContainer>
       )}
 
       <RelatedArtists artist={track.artists[0]} />
@@ -60,14 +64,8 @@ export const TrackPage = React.memo(({ id }) => {
   )
 })
 
-const AlbumLink = styled(PlainLink)`
-  font-size: 32px;
-  text-align: center;
-  display: flex;
+const AlbumContainer = styled.div`
   padding: 32px;
-  min-height: 100vh;
-  align-items: center;
-  justify-content: center;
 `
 
 const LabelLink = styled(PlainLink)`

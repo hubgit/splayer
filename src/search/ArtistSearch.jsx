@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { PopularityLink } from '../components/Links'
-import { artistPath } from '../pages/ArtistPage'
+import { ArtistLink } from '../links/ArtistLink'
 import { SearchForm } from '../search/SearchForm'
 import { SearchLink } from '../search/SearchLink'
 import { SearchSplit } from './SearchSplit'
@@ -28,11 +27,7 @@ export const ArtistSearch = ({ results }) => {
           {results &&
             results.artist &&
             results.artist.artists.items.map(artist => (
-              <Result
-                key={artist.uri}
-                to={artistPath(artist)}
-                popularity={artist.popularity}
-              >
+              <Result key={artist.uri} artist={artist}>
                 {artist.name}
               </Result>
             ))}
@@ -42,8 +37,7 @@ export const ArtistSearch = ({ results }) => {
   )
 }
 
-const Result = styled(PopularityLink)`
-  text-align: center;
+const Result = styled(ArtistLink)`
   margin: 8px;
   display: block;
 `

@@ -4,8 +4,8 @@ import styled from 'styled-components'
 export const PlainLink = styled(Link)`
   text-decoration: none;
   color: inherit;
-  display: inline-flex;
-  align-items: center;
+  //display: inline-flex;
+  //align-items: center;
 
   &:hover {
     text-decoration: underline;

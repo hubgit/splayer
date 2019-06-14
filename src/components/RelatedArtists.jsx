@@ -3,8 +3,7 @@ import { CancelToken } from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { uriToID } from '../lib'
-import { artistPath } from '../pages/ArtistPage'
-import { PlainLink } from './Links'
+import { ArtistLink } from '../links/ArtistLink'
 
 export const RelatedArtists = React.memo(
   ({ artist }) => {
@@ -39,13 +38,9 @@ export const RelatedArtists = React.memo(
     return (
       <Container>
         {artists.map(artist => (
-          <ArtistLink
-            key={artist.uri}
-            to={artistPath(artist)}
-            popularity={artist.popularity}
-          >
+          <RelatedArtistLink key={artist.uri} artist={artist}>
             {artist.name}
-          </ArtistLink>
+          </RelatedArtistLink>
         ))}
       </Container>
     )
@@ -61,9 +56,8 @@ const Container = styled.div`
   text-align: center;
 `
 
-const ArtistLink = styled(PlainLink)`
+const RelatedArtistLink = styled(ArtistLink)`
   display: inline-block;
-  font-size: ${props => props.popularity}px;
   padding: 4px 1em;
   margin: 4px;
   white-space: nowrap;

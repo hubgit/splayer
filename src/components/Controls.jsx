@@ -1,14 +1,6 @@
-import {
-  SpotifyPlaybackContext,
-  SpotifyStateContext,
-} from '@aeaton/react-spotify'
+import { SpotifyPlaybackContext, SpotifyStateContext } from '@aeaton/react-spotify'
 import { IconButton } from '@material-ui/core'
-import {
-  PauseCircleFilled,
-  PlayCircleFilled,
-  SkipNext,
-  SkipPrevious,
-} from '@material-ui/icons'
+import { PauseCircleFilled, PlayCircleFilled, SkipNext, SkipPrevious } from '@material-ui/icons'
 import React, { useCallback, useContext } from 'react'
 import styled from 'styled-components'
 

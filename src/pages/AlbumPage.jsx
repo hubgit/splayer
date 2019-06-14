@@ -6,25 +6,24 @@ import { Player } from '../components/Player'
 import { RelatedArtists } from '../components/RelatedArtists'
 import { scrollToTop, uriToID } from '../lib'
 import { SearchContext } from '../providers/SearchProvider'
+import { TrackContext } from '../providers/TrackProvider'
 import { AlbumSearchLink } from '../search/AlbumSearch'
 import { trackPath } from './TrackPage'
-
-export const albumPath = album => `/albums/${uriToID(album.uri)}`
 
 export const AlbumPage = React.memo(({ id }) => {
   const [album, setAlbum] = useState()
   const [tracks, setTracks] = useState()
   const [uris, setURIs] = useState()
 
-  // const state = useContext(SpotifyPlaybackContext)
-
+  const currentTrack = useContext(TrackContext)
   const client = useContext(SpotifyClientContext)
   const { closeSearch } = useContext(SearchContext)
 
-  // const currentTrack = state ? state.track_window.current_track : undefined
-  const currentTrack = undefined
-
   useEffect(() => {
+    setAlbum(undefined)
+    setTracks(undefined)
+    setURIs(undefined)
+
     if (client) {
       client
         .get(`/albums/${id}`, {
@@ -96,9 +95,16 @@ const TrackLink = styled(PopularityLink)`
   display: flex;
   text-align: center;
   
-  &:before {
+  &::before {
     display: inline-block;
+    padding-right: 8px;
     content: "${props => (props.currentTrack ? '>' : '')}";
+  }
+  
+  &::after {
+    display: inline-block;
+    padding-left: 8px;
+    content: "${props => (props.currentTrack ? ' <' : '')}";
   }
 `
 
@@ -110,14 +116,12 @@ const Info = styled.div`
   font-size: 32px;
   background: white;
   color: black;
-  min-height: 100vh;
 `
 
 const Tracks = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 32px;
-  min-height: 100vh;
   justify-content: start;
+  padding: 32px;
 `

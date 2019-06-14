@@ -2,8 +2,7 @@ import { SpotifyClientContext } from '@aeaton/react-spotify'
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { dateToYear, uriToID } from '../lib'
-import { albumPath } from '../pages/AlbumPage'
-import { PopularityLink } from './Links'
+import { AlbumLink } from '../links/AlbumLink'
 
 // TODO: sum popularities
 const filterAlbums = albums =>
@@ -14,7 +13,7 @@ const filterAlbums = albums =>
       )
   )
 
-export const ArtistAlbums = ({ artist }) => {
+export const ArtistAlbums = ({ artist, isPopover }) => {
   const client = useContext(SpotifyClientContext)
 
   const [albums, setAlbums] = useState()
@@ -29,11 +28,11 @@ export const ArtistAlbums = ({ artist }) => {
             limit: 50, // TODO: pagination
           },
         })
-        .then(({ data: { items } }) => {
+        .then(response => {
           client
             .get('/albums/', {
               params: {
-                ids: items
+                ids: response.data.items
                   .filter(item => item.album_type === 'album')
                   .slice(0, 20)
                   .map(item => uriToID(item.uri))
@@ -52,13 +51,9 @@ export const ArtistAlbums = ({ artist }) => {
   }
 
   return (
-    <Container>
+    <Container isPopover={isPopover}>
       {albums.map(album => (
-        <AlbumLink
-          key={album.uri}
-          to={albumPath(album)}
-          popularity={album.popularity}
-        >
+        <AlbumLink key={album.uri} album={album}>
           <span>{album.name}</span>{' '}
           <Year>{dateToYear(album.release_date)}</Year>
         </AlbumLink>
@@ -78,13 +73,6 @@ const Year = styled.span`
   }
 `
 
-const AlbumLink = styled(PopularityLink)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 8px;
-`
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -92,5 +80,5 @@ const Container = styled.div`
   justify-content: center;
   padding: 32px;
   text-align: center;
-  min-height: 100vh;
+  min-height: ${props => (props.isPopover ? '0' : '100vh')};
 `
