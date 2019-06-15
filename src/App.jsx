@@ -22,16 +22,23 @@ export const App = () => {
   }
 
   return (
-    <Container style={{ backgroundColor }}>
-      {authError && <div>{authError}</div>}
-      {playerError && <div>{playerError}</div>}
+    <Container
+      style={{
+        // backgroundImage: `linear-gradient(${backgroundColor}77, 5%, ${backgroundColor}, 100vh,  ${backgroundColor})`,
+        backgroundColor,
+      }}
+    >
+      <Main>
+        {authError && <div>{authError}</div>}
+        {playerError && <div>{playerError}</div>}
 
-      <Router>
-        <HomePage path={'/'} />
-        <ArtistPage path={'/artists/:id'} />
-        <AlbumPage path={'/albums/:id'} />
-        <TrackPage path={'/tracks/:id'} />
-      </Router>
+        <Router>
+          <HomePage path={'/'} />
+          <ArtistPage path={'/artists/:id'} />
+          <AlbumPage path={'/albums/:id'} />
+          <TrackPage path={'/tracks/:id'} />
+        </Router>
+      </Main>
 
       <Footer />
     </Container>
@@ -39,7 +46,18 @@ export const App = () => {
 }
 
 const Container = styled.div`
-  padding-top: 48px;
-  padding-bottom: 48px;
-  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+`
+
+const Main = styled.div`
+  flex: 1;
+  height: 100%;
+  overflow-y: auto;
 `

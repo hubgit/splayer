@@ -1,14 +1,22 @@
 import { SpotifyClientContext } from '@aeaton/react-spotify'
 import React, { useContext, useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import styled from 'styled-components'
 import { PlainLink } from '../components/Links'
 import { Player } from '../components/Player'
 import { RelatedArtists } from '../components/RelatedArtists'
-import { scrollToTop, uriToID } from '../lib'
+import { artistNames, scrollToTop, uriToID } from '../lib'
 import { AlbumLink } from '../links/AlbumLink'
 import { SearchContext } from '../providers/SearchProvider'
 
 export const trackPath = track => `/tracks/${uriToID(track.uri)}`
+
+const buildTitle = track =>
+  [
+    artistNames(track.artists),
+    track.album.name,
+    track.name,
+  ].join(' / ')
 
 export const TrackPage = React.memo(({ id }) => {
   const [track, setTrack] = useState()
@@ -43,6 +51,10 @@ export const TrackPage = React.memo(({ id }) => {
 
   return (
     <>
+      <Helmet>
+        <title>Splayer: {buildTitle(track)}</title>
+      </Helmet>
+
       <Player uris={uris} />
 
       {track.album && (

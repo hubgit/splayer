@@ -6,7 +6,7 @@ import { PopularityLink } from '../components/Links'
 import { uriToID } from '../lib'
 
 export const ArtistLink = ({ artist, children, className }) => {
-  const [anchor, setAnchor] = useState(null)
+  /*const [anchor, setAnchor] = useState(null)
 
   const closePopover = useCallback(() => {
     setAnchor(false)
@@ -19,7 +19,7 @@ export const ArtistLink = ({ artist, children, className }) => {
     }
   }, [])
 
-  const open = Boolean(anchor)
+  const open = Boolean(anchor)*/
 
   return (
     <>
@@ -27,12 +27,12 @@ export const ArtistLink = ({ artist, children, className }) => {
         to={`/artists/${uriToID(artist.uri)}`}
         popularity={artist.popularity}
         className={className}
-        onClick={togglePopover}
+        // onClick={togglePopover}
       >
         {children}
       </Link>
 
-      <Popover
+      {/*      <Popover
         open={open}
         anchorEl={anchor}
         onClose={closePopover}
@@ -47,7 +47,7 @@ export const ArtistLink = ({ artist, children, className }) => {
         disableRestoreFocus
       >
         <PopoverArtistAlbums artist={artist} isPopover={true} />
-      </Popover>
+      </Popover>*/}
     </>
   )
 }
@@ -57,8 +57,10 @@ const Link = styled(PopularityLink)`
   margin: 8px;
 `
 
+/*
 const PopoverArtistAlbums = styled(ArtistAlbums)`
   width: 600px;
   height: 300px;
   overflow: auto;
 `
+*/

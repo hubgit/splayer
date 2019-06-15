@@ -1,6 +1,10 @@
 import { SpotifyClientContext } from '@aeaton/react-spotify'
 import { IconButton } from '@material-ui/core'
-import { CheckRounded, SaveRounded, SyncRounded } from '@material-ui/icons'
+import {
+  BookmarkBorderOutlined,
+  BookmarkRounded,
+  SyncRounded,
+} from '@material-ui/icons'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { uriToID } from '../lib'
 import { TrackContext } from '../providers/TrackProvider'
@@ -57,10 +61,10 @@ export const SaveButton = () => {
     }
 
     if (saving) {
-      return <SaveRounded color={'action'} />
+      return <BookmarkRounded color={'action'} />
     }
 
-    return <SaveRounded />
+    return <BookmarkBorderOutlined />
   }, [error, saving])
 
   if (!client || !track || !track.album || !track.album.uri) {
@@ -72,8 +76,8 @@ export const SaveButton = () => {
   }
 
   return hasAlbum ? (
-    <IconButton disabled={true}>
-      <CheckRounded />
+    <IconButton>
+      <BookmarkRounded />
     </IconButton>
   ) : (
     <IconButton onClick={saveAlbum}>{statusIcon()}</IconButton>

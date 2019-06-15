@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { artistNames } from '../lib'
 import { TrackLink } from '../links/TrackLink'
 import { SearchForm } from '../search/SearchForm'
 import { SearchSplit } from './SearchSplit'
@@ -23,7 +24,7 @@ export const TrackSearch = ({ results }) => {
               <TrackLink key={track.uri} track={track}>
                 {track.name}
                 <Artists>
-                  {track.artists.map(artist => artist.name).join(', ')}
+                  {artistNames(track.artists)}
                 </Artists>
               </TrackLink>
             ))}

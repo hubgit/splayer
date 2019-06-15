@@ -1,17 +1,16 @@
 import { SpotifyClientContext } from '@aeaton/react-spotify'
 import React, { useContext, useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import styled from 'styled-components'
 import { ArtistAlbums } from '../components/ArtistAlbums'
 import { PopularityLink } from '../components/Links'
 import { Player } from '../components/Player'
 import { RelatedArtists } from '../components/RelatedArtists'
-import { dateToYear, scrollToTop, uriToID } from '../lib'
+import { dateToYear, scrollToTop } from '../lib'
 import { SearchContext } from '../providers/SearchProvider'
 import { TrackContext } from '../providers/TrackProvider'
 import { ArtistSearchLink } from '../search/ArtistSearch'
 import { trackPath } from './TrackPage'
-
-export const artistPath = artist => `/artists/${uriToID(artist.uri)}`
 
 export const ArtistPage = ({ id }) => {
   const [uris, setURIs] = useState()
@@ -52,18 +51,27 @@ export const ArtistPage = ({ id }) => {
 
   return (
     <>
+      <Helmet>
+        <title>Splayer: {artist.name}</title>
+      </Helmet>
+
       {uris && <Player uris={uris} />}
 
       {tracks && (
         <Tracks>
+          <div>tracks</div>
+
           {tracks.map(track => (
             <TrackLink
               key={track.uri}
               to={trackPath(track)}
               popularity={track.popularity}
-              currentTrack={currentTrack && currentTrack.uri === track.uri}
             >
-              <div>{track.name}</div>
+              <TrackName
+                currentTrack={currentTrack && currentTrack.uri === track.uri}
+              >
+                {track.name}
+              </TrackName>
               <Year>{dateToYear(track.album.release_date)}</Year>
             </TrackLink>
           ))}
@@ -91,6 +99,23 @@ export const ArtistPage = ({ id }) => {
 const Year = styled.div`
   font-size: 14px;
   color: #777;
+`
+
+const TrackName = styled.div`
+  display: flex;
+  text-align: center;
+  
+  &::before {
+    display: inline-block;
+    padding-right: 8px;
+    content: "${props => (props.currentTrack ? '>' : '')}";
+  }
+  
+  &::after {
+    display: inline-block;
+    padding-left: 8px;
+    content: "${props => (props.currentTrack ? ' <' : '')}";
+  }
 `
 
 const TrackLink = styled(PopularityLink)`

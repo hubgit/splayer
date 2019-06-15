@@ -53,6 +53,7 @@ export const ArtistAlbums = ({ artist, isPopover }) => {
 
   return (
     <Container isPopover={isPopover}>
+      <div>albums</div>
       {albums.map(album => (
         <AlbumLink key={album.uri} album={album}>
           <span>{album.name}</span>{' '}

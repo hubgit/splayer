@@ -1,7 +1,7 @@
 import { SpotifyClientContext } from '@aeaton/react-spotify'
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { dateToYear } from '../lib'
+import { artistNames, dateToYear } from '../lib'
 import { AlbumLink } from '../links/AlbumLink'
 
 export const UserAlbums = () => {
@@ -34,7 +34,7 @@ export const UserAlbums = () => {
         <AlbumLink key={album.uri} album={album}>
           <div>{album.name}</div>
           <Metadata>
-            {album.artists.map(artist => artist.name).join(', ')}
+            {artistNames(album.artists)}
             {' / '}
             {dateToYear(album.release_date)}
           </Metadata>

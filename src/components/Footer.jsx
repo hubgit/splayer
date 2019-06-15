@@ -1,17 +1,21 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { ColorContext } from '../providers/ColorProvider'
-import { HomeButton } from './HomeButton'
-import { SaveButton } from '../search/SaveButton'
 import { SearchButton } from '../search/SearchButton'
 import { Auth } from './Auth'
 import { Controls } from './Controls'
+import { HomeButton } from './HomeButton'
+import { SaveButton } from './SaveButton'
 
 export const Footer = () => {
   const { backgroundColor } = useContext(ColorContext)
 
   return (
-    <Container style={{ backgroundColor }}>
+    <Container
+      style={{
+        backgroundColor,
+      }}
+    >
       <div>
         <SearchButton />
         <HomeButton />
@@ -28,12 +32,8 @@ export const Footer = () => {
 const Container = styled.nav`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   padding: 0 16px;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
   z-index: 1;
 
   > div {

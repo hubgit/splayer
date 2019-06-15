@@ -1,7 +1,7 @@
 import { SpotifyClientContext } from '@aeaton/react-spotify'
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { dateToYear, uriToID } from '../lib'
+import { artistNames, dateToYear, uriToID } from '../lib'
 import { AlbumLink } from '../links/AlbumLink'
 import { SearchForm } from '../search/SearchForm'
 import { SearchLink } from './SearchLink'
@@ -71,7 +71,7 @@ export const AlbumSearch = ({ results }) => {
                 <div>{album.name}</div>
 
                 <Artist>
-                  {album.artists.map(artist => artist.name).join(', ')}
+                  {artistNames(album.artists)}
                   <span> / </span>
                   {album.release_date && dateToYear(album.release_date)}
                 </Artist>

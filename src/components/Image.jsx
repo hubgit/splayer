@@ -13,7 +13,7 @@ export const Image = React.memo(
     }
 
     const image = album.images.find(
-      image => image.width === 300 || image.height === 300
+      image => image.width === 640 || image.height === 640
     )
 
     if (!image) {
@@ -26,17 +26,21 @@ export const Image = React.memo(
         crossOrigin={'anonymous'}
         alt={`${album.name} cover`}
         src={image.url}
-        width={300}
-        height={300}
+        width={image.height}
+        height={image.width}
         style={{
-          background: 'white',
-          borderRadius: '50%',
-          border: '100px solid black',
-          width: 300,
-          padding: 4,
+          // background: 'white',
+          // borderRadius: '50%',
+          // border: '100px solid black',
+          // width: 640,
+          // padding: 4,
           maxWidth: '100%',
-          animation: paused ? 'none' : 'spin 4s linear infinite',
-          transform: 'translate3d(0, 0, 0)',
+          borderRadius: 8,
+          // boxShadow: '0 2px 5px -4px #777',
+          // animation: paused ? 'none' : 'spin 4s linear infinite',
+          // backfaceVisibility: 'hidden',
+          // perspective: 1000,
+          // willChange: 'animation',
         }}
         onLoad={() => {
           const vibrant = new Vibrant(imageRef.current)
