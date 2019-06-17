@@ -14,8 +14,6 @@ import styled from 'styled-components'
 import { artistNames } from '../lib'
 import { TrackContext } from '../providers/TrackProvider'
 
-const buildTitle = track => [artistNames(track.artists), track.name].join(' - ')
-
 export const Controls = React.memo(() => {
   const { player } = useContext(SpotifyPlaybackContext)
   const state = useContext(SpotifyStateContext)
@@ -39,6 +37,15 @@ export const Controls = React.memo(() => {
 
   return (
     <Container>
+      <Info>
+        {track && (
+          <>
+            <div>{artistNames(track.artists)}</div>
+            <div style={{ fontStyle: 'italic' }}>{track.name}</div>
+          </>
+        )}
+      </Info>
+
       <Buttons>
         <IconButton
           onClick={previousTrack}
@@ -58,8 +65,6 @@ export const Controls = React.memo(() => {
           <SkipNext />
         </IconButton>
       </Buttons>
-
-      <Info>{track && <span>{buildTitle(track)}</span>}</Info>
     </Container>
   )
 })
@@ -79,10 +84,12 @@ const Buttons = styled.div`
 
 const Info = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
   font-size: 14px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
     Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-  margin-bottom: 16px;
+  margin: 8px;
 `

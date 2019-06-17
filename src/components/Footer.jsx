@@ -11,11 +11,7 @@ export const Footer = () => {
   const { backgroundColor } = useContext(ColorContext)
 
   return (
-    <Container
-      style={{
-        backgroundColor,
-      }}
-    >
+    <Container backgroundColor={backgroundColor}>
       <div>
         <SearchButton />
         <HomeButton />
@@ -35,6 +31,10 @@ const Container = styled.nav`
   align-items: flex-end;
   padding: 0 16px;
   z-index: 1;
+  background-image: ${props =>
+    `linear-gradient(${
+      props.backgroundColor
+    } 0%, rgba(255,255,255,0.35) 100%)`};
 
   > div {
     flex: 1;

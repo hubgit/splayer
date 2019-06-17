@@ -1,10 +1,6 @@
 import { SpotifyClientContext } from '@aeaton/react-spotify'
 import { IconButton } from '@material-ui/core'
-import {
-  BookmarkBorderOutlined,
-  BookmarkRounded,
-  SyncRounded,
-} from '@material-ui/icons'
+import { BookmarkBorderOutlined, BookmarkRounded, SyncRounded } from '@material-ui/icons'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { uriToID } from '../lib'
 import { TrackContext } from '../providers/TrackProvider'

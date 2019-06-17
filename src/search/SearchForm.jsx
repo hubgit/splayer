@@ -46,6 +46,7 @@ export const SearchForm = React.memo(({ fields, type, limit }) => {
           label={ucfirst(field)}
           value={query[field] || ''}
           onChange={handleChange(field)}
+          type={field === 'year' ? 'number' : 'text'}
         />
       ))}
 

@@ -1,7 +1,5 @@
-import { Popover } from '@material-ui/core'
-import React, { useCallback, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { ArtistAlbums } from '../components/ArtistAlbums'
 import { PopularityLink } from '../components/Links'
 import { uriToID } from '../lib'
 
