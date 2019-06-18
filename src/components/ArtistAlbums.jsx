@@ -1,17 +1,30 @@
 import { SpotifyClientContext } from '@aeaton/react-spotify'
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { fetchAlbums } from '../api'
 import { dateToYear, uriToID } from '../lib'
 import { AlbumLink } from '../links/AlbumLink'
 
-// TODO: sum popularities
-const filterAlbums = albums =>
-  albums.filter(
-    album =>
-      !albums.find(
-        a => a.name === album.name && a.popularity > album.popularity
-      )
-  )
+const fetchArtistAlbums = async (artist, client, setAlbums) => {
+  const albums = []
+
+  let response = await client.get(`/artists/${uriToID(artist.uri)}/albums`, {
+    params: {
+      include_groups: 'album',
+      market: 'from_token',
+      limit: 50,
+    },
+  })
+
+  albums.push(...response.data.items)
+
+  while (response.data.next) {
+    response = await client.get(response.data.next)
+    albums.push(...response.data.items)
+  }
+
+  fetchAlbums(albums, client, setAlbums)
+}
 
 export const ArtistAlbums = ({ artist, isPopover }) => {
   const client = useContext(SpotifyClientContext)
@@ -20,30 +33,7 @@ export const ArtistAlbums = ({ artist, isPopover }) => {
 
   useEffect(() => {
     if (client) {
-      client
-        .get(`/artists/${uriToID(artist.uri)}/albums`, {
-          params: {
-            include_groups: 'album',
-            market: 'from_token',
-            limit: 50, // TODO: pagination
-          },
-        })
-        .then(response => {
-          client
-            .get('/albums/', {
-              params: {
-                market: 'from_token',
-                ids: response.data.items
-                  .filter(item => item.album_type === 'album')
-                  .slice(0, 20)
-                  .map(item => uriToID(item.uri))
-                  .join(','),
-              },
-            })
-            .then(response => {
-              setAlbums(filterAlbums(response.data.albums))
-            })
-        })
+      fetchArtistAlbums(artist, client, setAlbums)
     }
   }, [artist, client, setAlbums])
 

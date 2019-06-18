@@ -16,23 +16,17 @@ export const ArtistSearchLink = ({ query, children }) => (
 export const ArtistSearch = ({ results }) => {
   return (
     <SearchSplit>
-      <div>
-        <Heading>Artists</Heading>
+      <SearchForm fields={fields} type={'artist'} />
 
-        <SearchForm fields={fields} type={'artist'} />
-      </div>
-
-      <div>
-        <Results>
-          {results &&
-            results.artist &&
-            results.artist.artists.items.map(artist => (
-              <Result key={artist.uri} artist={artist}>
-                {artist.name}
-              </Result>
-            ))}
-        </Results>
-      </div>
+      <Results>
+        {results &&
+        results.artist &&
+        results.artist.artists.items.map(artist => (
+          <Result key={artist.uri} artist={artist}>
+            {artist.name}
+          </Result>
+        ))}
+      </Results>
     </SearchSplit>
   )
 }
@@ -40,11 +34,6 @@ export const ArtistSearch = ({ results }) => {
 const Result = styled(ArtistLink)`
   margin: 8px;
   display: block;
-`
-
-const Heading = styled.div`
-  font-size: 30px;
-  margin: 16px;
 `
 
 const Results = styled.div`

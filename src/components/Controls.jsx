@@ -37,14 +37,14 @@ export const Controls = React.memo(() => {
 
   return (
     <Container>
-      <Info>
+      {/*<Info>
         {track && (
           <>
             <div>{artistNames(track.artists)}</div>
             <div style={{ fontStyle: 'italic' }}>{track.name}</div>
           </>
         )}
-      </Info>
+      </Info>*/}
 
       <Buttons>
         <IconButton

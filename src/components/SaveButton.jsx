@@ -1,6 +1,6 @@
 import { SpotifyClientContext } from '@aeaton/react-spotify'
 import { IconButton } from '@material-ui/core'
-import { BookmarkBorderOutlined, BookmarkRounded, SyncRounded } from '@material-ui/icons'
+import { LibraryAddOutlined } from '@material-ui/icons'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { uriToID } from '../lib'
 import { TrackContext } from '../providers/TrackProvider'
@@ -53,29 +53,19 @@ export const SaveButton = () => {
 
   const statusIcon = useCallback(() => {
     if (error) {
-      return <SyncRounded color={'error'} />
+      return <LibraryAddOutlined color={'error'} />
     }
 
     if (saving) {
-      return <BookmarkRounded color={'action'} />
+      return <LibraryAddOutlined color={'action'} />
     }
 
-    return <BookmarkBorderOutlined />
+    return <LibraryAddOutlined />
   }, [error, saving])
 
-  if (!client || !track || !track.album || !track.album.uri) {
+  if (hasAlbum !== false) {
     return null
   }
 
-  if (hasAlbum === undefined) {
-    return null
-  }
-
-  return hasAlbum ? (
-    <IconButton>
-      <BookmarkRounded />
-    </IconButton>
-  ) : (
-    <IconButton onClick={saveAlbum}>{statusIcon()}</IconButton>
-  )
+  return <IconButton onClick={saveAlbum}>{statusIcon()}</IconButton>
 }

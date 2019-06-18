@@ -4,17 +4,17 @@ import { ColorContext } from '../providers/ColorProvider'
 import { SearchButton } from '../search/SearchButton'
 import { Auth } from './Auth'
 import { Controls } from './Controls'
-import { HomeButton } from './HomeButton'
+import { LibraryButton } from './LibraryButton'
 import { SaveButton } from './SaveButton'
 
 export const Footer = () => {
   const { backgroundColor } = useContext(ColorContext)
 
   return (
-    <Container backgroundColor={backgroundColor}>
+    <Container style={{ backgroundColor }}>
       <div>
         <SearchButton />
-        <HomeButton />
+        <LibraryButton />
         <SaveButton />
       </div>
       <Controls />
@@ -31,10 +31,6 @@ const Container = styled.nav`
   align-items: flex-end;
   padding: 0 16px;
   z-index: 1;
-  background-image: ${props =>
-    `linear-gradient(${
-      props.backgroundColor
-    } 0%, rgba(255,255,255,0.35) 100%)`};
 
   > div {
     flex: 1;

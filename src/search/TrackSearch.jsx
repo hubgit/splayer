@@ -10,34 +10,21 @@ const fields = ['track', 'artist', 'album', 'genre', 'label', 'year']
 export const TrackSearch = ({ results }) => {
   return (
     <SearchSplit>
-      <div>
-        <Heading>Tracks</Heading>
+      <SearchForm fields={fields} type={'track'} />
 
-        <SearchForm fields={fields} type={'track'} />
-      </div>
-
-      <div>
-        <Results>
-          {results &&
-            results.track &&
-            results.track.tracks.items.map(track => (
-              <TrackLink key={track.uri} track={track}>
-                {track.name}
-                <Artists>
-                  {artistNames(track.artists)}
-                </Artists>
-              </TrackLink>
-            ))}
-        </Results>
-      </div>
+      <Results>
+        {results &&
+          results.track &&
+          results.track.tracks.items.map(track => (
+            <TrackLink key={track.uri} track={track}>
+              {track.name}
+              <Artists>{artistNames(track.artists)}</Artists>
+            </TrackLink>
+          ))}
+      </Results>
     </SearchSplit>
   )
 }
-
-const Heading = styled.div`
-  font-size: 30px;
-  text-align: center;
-`
 
 const Results = styled.div`
   display: flex;

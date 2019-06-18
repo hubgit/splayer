@@ -62,11 +62,14 @@ export const SearchForm = React.memo(({ fields, type, limit }) => {
 })
 
 const Form = styled.form`
-  display: grid;
-  grid-gap: 16px;
-  grid-auto-flow: row;
+  display: flex;
+  flex-direction: column;
   margin: 16px;
   width: 400px;
+
+  > div {
+    margin-bottom: 16px;
+  }
 `
 
 const Actions = styled.div`

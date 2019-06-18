@@ -23,10 +23,7 @@ export const App = () => {
 
   return (
     <Container
-      style={{
-        // backgroundImage: `linear-gradient(${backgroundColor}77, 5%, ${backgroundColor}, 100vh,  ${backgroundColor})`,
-        backgroundColor,
-      }}
+      style={{ backgroundColor }}
     >
       <Main>
         {authError && <div>{authError}</div>}

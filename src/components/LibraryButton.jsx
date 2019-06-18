@@ -1,10 +1,10 @@
 import { IconButton } from '@material-ui/core'
-import { HomeRounded } from '@material-ui/icons'
+import { LibraryMusicRounded } from '@material-ui/icons'
 import { navigate } from '@reach/router'
 import React, { useCallback, useContext } from 'react'
 import { SearchContext } from '../providers/SearchProvider'
 
-export const HomeButton = () => {
+export const LibraryButton = () => {
   const { closeSearch } = useContext(SearchContext)
 
   const navigateHome = useCallback(() => {
@@ -14,7 +14,7 @@ export const HomeButton = () => {
 
   return (
     <IconButton onClick={navigateHome}>
-      <HomeRounded />
+      <LibraryMusicRounded />
     </IconButton>
   )
 }
