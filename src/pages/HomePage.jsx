@@ -1,10 +1,10 @@
-import { SpotifyPlaybackContext } from '@aeaton/react-spotify'
+// import { SpotifyPlaybackContext } from '@aeaton/react-spotify'
 import React, { useContext, useEffect } from 'react'
 import { UserAlbums } from '../components/UserAlbums'
 import { ColorContext, DEFAULT_BACKGROUND_COLOR } from '../providers/ColorProvider'
 
 export const HomePage = () => {
-  const { player } = useContext(SpotifyPlaybackContext)
+  // const { player } = useContext(SpotifyPlaybackContext)
 
   const { setBackgroundColor } = useContext(ColorContext)
 
@@ -12,11 +12,11 @@ export const HomePage = () => {
     setBackgroundColor(DEFAULT_BACKGROUND_COLOR)
   }, [setBackgroundColor])
 
-  useEffect(() => {
+  /*  useEffect(() => {
     if (player) {
       player.pause()
     }
-  }, [player])
+  }, [player])*/
 
   return <UserAlbums />
 }

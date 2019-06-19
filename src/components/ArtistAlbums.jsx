@@ -26,7 +26,7 @@ const fetchArtistAlbums = async (artist, client, setAlbums) => {
   fetchAlbums(albums, client, setAlbums)
 }
 
-export const ArtistAlbums = ({ artist, isPopover }) => {
+export const ArtistAlbums = ({ artist }) => {
   const client = useContext(SpotifyClientContext)
 
   const [albums, setAlbums] = useState()
@@ -37,19 +37,16 @@ export const ArtistAlbums = ({ artist, isPopover }) => {
     }
   }, [artist, client, setAlbums])
 
-  if (!albums) {
-    return null
-  }
-
   return (
-    <Container isPopover={isPopover}>
+    <Container>
       <div>albums</div>
-      {albums.map(album => (
-        <AlbumLink key={album.uri} album={album}>
-          <span>{album.name}</span>{' '}
-          <Year>{dateToYear(album.release_date)}</Year>
-        </AlbumLink>
-      ))}
+      {albums &&
+        albums.map(album => (
+          <AlbumLink key={album.uri} album={album}>
+            <span>{album.name}</span>{' '}
+            <Year>{dateToYear(album.release_date)}</Year>
+          </AlbumLink>
+        ))}
     </Container>
   )
 }
@@ -72,5 +69,4 @@ const Container = styled.div`
   justify-content: center;
   padding: 32px;
   text-align: center;
-  min-height: ${props => (props.isPopover ? '0' : '100vh')};
 `

@@ -1,6 +1,8 @@
 import { SpotifyClientContext } from '@aeaton/react-spotify'
-import { IconButton } from '@material-ui/core'
-import { LibraryAddOutlined } from '@material-ui/icons'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import MenuItem from '@material-ui/core/MenuItem'
+import { CheckRounded, LibraryAddOutlined } from '@material-ui/icons'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { uriToID } from '../lib'
 import { TrackContext } from '../providers/TrackProvider'
@@ -60,12 +62,21 @@ export const SaveButton = () => {
       return <LibraryAddOutlined color={'action'} />
     }
 
-    return <LibraryAddOutlined />
-  }, [error, saving])
+    if (hasAlbum === true) {
+      return <CheckRounded />
+    }
 
-  if (hasAlbum !== false) {
+    return <LibraryAddOutlined />
+  }, [error, hasAlbum, saving])
+
+  if (hasAlbum === undefined) {
     return null
   }
 
-  return <IconButton onClick={saveAlbum}>{statusIcon()}</IconButton>
+  return (
+    <MenuItem onClick={saveAlbum}>
+      <ListItemIcon>{statusIcon()}</ListItemIcon>
+      <ListItemText primary="Save Album" />
+    </MenuItem>
+  )
 }

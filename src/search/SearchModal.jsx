@@ -7,7 +7,7 @@ import { AlbumSearch } from './AlbumSearch'
 import { ArtistSearch } from './ArtistSearch'
 import { TrackSearch } from './TrackSearch'
 
-const searchTypes = ['artist', 'album', 'track']
+const searchTypes = ['album', 'artist', 'track']
 
 export const SearchModal = () => {
   const [active, setActive] = useState(0)
@@ -41,13 +41,13 @@ export const SearchModal = () => {
         textColor="primary"
         centered
       >
-        <Tab label={'Artists'} />
         <Tab label={'Albums'} />
+        <Tab label={'Artists'} />
         <Tab label={'Tracks'} />
       </Tabs>
 
-      {active === 0 && <ArtistSearch results={results} />}
-      {active === 1 && <AlbumSearch results={results} />}
+      {active === 0 && <AlbumSearch results={results} />}
+      {active === 1 && <ArtistSearch results={results} />}
       {active === 2 && <TrackSearch results={results} />}
     </Container>
   )
@@ -56,12 +56,7 @@ export const SearchModal = () => {
 const Container = styled.div`
   background: white;
   padding: 16px;
-  box-shadow: 0 1px 2px #aaa;
-  border-radius: 4px;
-  position: fixed;
-  top: 16px;
-  bottom: 64px;
-  left: 16px;
-  right: 16px;
+  width: 100%;
+  height: 100%;
   overflow-y: auto;
 `

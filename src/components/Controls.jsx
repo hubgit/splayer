@@ -2,34 +2,33 @@ import {
   SpotifyPlaybackContext,
   SpotifyStateContext,
 } from '@aeaton/react-spotify'
-import { IconButton } from '@material-ui/core'
-import {
-  PauseCircleFilled,
-  PlayCircleFilled,
-  SkipNext,
-  SkipPrevious,
-} from '@material-ui/icons'
-import React, { useCallback, useContext } from 'react'
+import { Fade, IconButton, Menu } from '@material-ui/core'
+import { PauseCircleFilled, PlayCircleFilled } from '@material-ui/icons'
+import React, { useCallback, useContext, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { artistNames } from '../lib'
+import { artistLinks } from '../lib'
 import { TrackContext } from '../providers/TrackProvider'
+import { SaveButton } from './SaveButton'
 
 export const Controls = React.memo(() => {
   const { player } = useContext(SpotifyPlaybackContext)
   const state = useContext(SpotifyStateContext)
   const track = useContext(TrackContext)
+  const [trackActionsOpen, setTrackActionsOpen] = useState(false)
+
+  const trackAnchor = useRef()
 
   const togglePlay = useCallback(() => {
     player.togglePlay()
   }, [player])
 
-  const nextTrack = useCallback(() => {
-    player.nextTrack()
-  }, [player])
+  const toggleTrackActions = useCallback(() => {
+    setTrackActionsOpen(value => !value)
+  }, [])
 
-  const previousTrack = useCallback(() => {
-    player.previousTrack()
-  }, [player])
+  const closeTrackActions = useCallback(() => {
+    setTrackActionsOpen(false)
+  }, [])
 
   if (!state) {
     return null
@@ -37,33 +36,38 @@ export const Controls = React.memo(() => {
 
   return (
     <Container>
-      {/*<Info>
-        {track && (
-          <>
-            <div>{artistNames(track.artists)}</div>
-            <div style={{ fontStyle: 'italic' }}>{track.name}</div>
-          </>
-        )}
-      </Info>*/}
-
       <Buttons>
-        <IconButton
-          onClick={previousTrack}
-          disabled={state.disallows.skipping_prev}
-        >
-          <SkipPrevious />
-        </IconButton>
+        {track && <Artists>{artistLinks(track.artists)}</Artists>}
 
         <IconButton onClick={togglePlay}>
           {state.paused ? <PlayCircleFilled /> : <PauseCircleFilled />}
         </IconButton>
 
-        <IconButton
-          onClick={nextTrack}
-          disabled={state.disallows.skipping_next}
+        {/*{track && <Track>{track.name}</Track>}*/}
+        {track && (
+          <Track onClick={toggleTrackActions} ref={trackAnchor}>
+            {track.album.name}
+          </Track>
+        )}
+
+        <Menu
+          marginThreshold={0}
+          getContentAnchorEl={null}
+          open={trackActionsOpen}
+          anchorEl={trackAnchor.current}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          transformOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          TransitionComponent={Fade}
+          onClose={closeTrackActions}
         >
-          <SkipNext />
-        </IconButton>
+          <SaveButton />
+        </Menu>
       </Buttons>
     </Container>
   )
@@ -82,6 +86,24 @@ const Buttons = styled.div`
   justify-content: center;
 `
 
+const Meta = styled.div`
+  margin: 0 4px;
+  width: 400px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
+
+const Artists = styled(Meta)`
+  text-align: right;
+`
+
+const Track = styled(Meta)`
+  text-align: left;
+  font-style: italic;
+  cursor: pointer;
+`
+
+/*
 const Info = styled.div`
   display: flex;
   flex-direction: column;
@@ -93,3 +115,4 @@ const Info = styled.div`
     Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   margin: 8px;
 `
+*/

@@ -1,7 +1,7 @@
 import * as Vibrant from 'node-vibrant'
 import React, { useCallback, useContext } from 'react'
-import { ColorContext } from '../providers/ColorProvider'
 import styled from 'styled-components'
+import { ColorContext } from '../providers/ColorProvider'
 
 export const CoverImage = React.memo(
   ({ album }) => {
@@ -49,4 +49,5 @@ export const CoverImage = React.memo(
 const Image = styled.img`
   max-width: 100%;
   border-radius: 8px;
+  //box-shadow: 0 1px 4px #ccc;
 `

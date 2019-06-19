@@ -20,9 +20,10 @@ export const SearchProvider = ({ children }) => {
         throw new Error('No client yet!')
       }
 
+      setResults({})
+
       if (!query) {
         setQuery({})
-        setResults({})
         return
       }
 

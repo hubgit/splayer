@@ -39,16 +39,18 @@ export const SearchForm = React.memo(({ fields, type, limit }) => {
 
   return (
     <Form onSubmit={submit} onReset={reset}>
-      {fields.map((field, index) => (
-        <TextField
-          key={field}
-          autoFocus={index === 0}
-          label={ucfirst(field)}
-          value={query[field] || ''}
-          onChange={handleChange(field)}
-          type={field === 'year' ? 'number' : 'text'}
-        />
-      ))}
+      <div>
+        {fields.map((field, index) => (
+          <TextField
+            key={field}
+            autoFocus={index === 0}
+            label={ucfirst(field)}
+            value={query[field] || ''}
+            onChange={handleChange(field)}
+            type={field === 'year' ? 'number' : 'text'}
+          />
+        ))}
+      </div>
 
       <Actions>
         <Button color={'primary'} variant={'contained'} type={'submit'}>
@@ -64,16 +66,15 @@ export const SearchForm = React.memo(({ fields, type, limit }) => {
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  align-items: center;
   margin: 16px;
-  width: 400px;
 
-  > div {
-    margin-bottom: 16px;
+  > div > div {
+    margin: 16px;
   }
 `
 
 const Actions = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
 `

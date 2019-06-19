@@ -1,12 +1,12 @@
 import { SpotifyPlaybackContext } from '@aeaton/react-spotify'
 import React, { useContext, useLayoutEffect } from 'react'
 import styled from 'styled-components'
-import { TrackContext } from '../providers/TrackProvider'
+// import { TrackContext } from '../providers/TrackProvider'
 import { CoverImage } from './CoverImage'
 
-export const Player = React.memo(({ uris }) => {
+export const Player = React.memo(({ album, uris }) => {
   const { player, play } = useContext(SpotifyPlaybackContext)
-  const track = useContext(TrackContext)
+  // const track = useContext(TrackContext)
 
   useLayoutEffect(() => {
     if (player) {
@@ -14,9 +14,13 @@ export const Player = React.memo(({ uris }) => {
     }
   }, [player, play, uris])
 
+  if (!album) {
+    return null
+  }
+
   return (
     <Container>
-      {track && track.album && <CoverImage album={track.album} />}
+      <CoverImage album={album} />
     </Container>
   )
 })

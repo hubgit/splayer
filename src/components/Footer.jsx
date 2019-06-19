@@ -2,25 +2,26 @@ import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { ColorContext } from '../providers/ColorProvider'
 import { SearchButton } from '../search/SearchButton'
-import { Auth } from './Auth'
+import { Account } from './Account'
 import { Controls } from './Controls'
-import { LibraryButton } from './LibraryButton'
-import { SaveButton } from './SaveButton'
 
 export const Footer = () => {
   const { backgroundColor } = useContext(ColorContext)
 
   return (
-    <Container style={{ backgroundColor }}>
+    <Container
+      style={{
+        borderTopWidth: 10,
+        borderTopStyle: 'solid',
+        borderTopColor: backgroundColor,
+      }}
+    >
       <div>
         <SearchButton />
-        <LibraryButton />
-        <SaveButton />
       </div>
       <Controls />
-      <div>
-        <Auth />
-      </div>
+
+      <Account />
     </Container>
   )
 }
@@ -30,6 +31,7 @@ const Container = styled.nav`
   justify-content: space-between;
   align-items: flex-end;
   padding: 0 16px;
+  margin-top: 4px;
   z-index: 1;
 
   > div {

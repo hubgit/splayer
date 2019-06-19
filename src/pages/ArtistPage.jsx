@@ -55,13 +55,17 @@ export const ArtistPage = ({ id }) => {
         <title>Splayer: {artist.name}</title>
       </Helmet>
 
+      <Artist>{artist.name}</Artist>
+
       {uris && <Player uris={uris} />}
 
-      {tracks && (
-        <Tracks>
-          <div>tracks</div>
+      <ArtistAlbums artist={artist} />
 
-          {tracks.map(track => (
+      <Tracks>
+        <div>tracks</div>
+
+        {tracks &&
+          tracks.map(track => (
             <TrackLink
               key={track.uri}
               to={trackPath(track)}
@@ -75,10 +79,7 @@ export const ArtistPage = ({ id }) => {
               <Year>{dateToYear(track.album.release_date)}</Year>
             </TrackLink>
           ))}
-        </Tracks>
-      )}
-
-      <ArtistAlbums artist={artist} />
+      </Tracks>
 
       {artist.genres && (
         <Genres>
@@ -95,6 +96,12 @@ export const ArtistPage = ({ id }) => {
     </>
   )
 }
+
+const Artist = styled.div`
+  text-align: center;
+  font-size: 32px;
+  padding: 48px;
+`
 
 const Year = styled.div`
   font-size: 14px;

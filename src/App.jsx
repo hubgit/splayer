@@ -8,23 +8,18 @@ import { AlbumPage } from './pages/AlbumPage'
 import { ArtistPage } from './pages/ArtistPage'
 import { HomePage } from './pages/HomePage'
 import { TrackPage } from './pages/TrackPage'
-import { ColorContext } from './providers/ColorProvider'
 
 export const App = () => {
   const { accessToken, error: authError } = useContext(SpotifyContext)
   // const { profile } = useContext(SpotifyProfileContext)
   const { error: playerError } = useContext(SpotifyPlaybackContext)
 
-  const { backgroundColor } = useContext(ColorContext)
-
   if (!accessToken) {
     return <Login />
   }
 
   return (
-    <Container
-      style={{ backgroundColor }}
-    >
+    <Container>
       <Main>
         {authError && <div>{authError}</div>}
         {playerError && <div>{playerError}</div>}

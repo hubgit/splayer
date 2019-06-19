@@ -1,17 +1,25 @@
 import { SpotifyClientContext } from '@aeaton/react-spotify'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import styled from 'styled-components'
-import { PopularityLink } from '../components/Links'
 import { Player } from '../components/Player'
 import { RelatedArtists } from '../components/RelatedArtists'
 import { artistNames, scrollToTop, uriToID } from '../lib'
 import { SearchContext } from '../providers/SearchProvider'
 import { TrackContext } from '../providers/TrackProvider'
 import { AlbumSearchLink } from '../search/AlbumSearch'
-import { trackPath } from './TrackPage'
 
 const buildTitle = album => [artistNames(album.artists), album.name].join(' / ')
+
+const sum = items => {
+  let total = 0
+
+  for (const item of items) {
+    total += item
+  }
+
+  return total
+}
 
 export const AlbumPage = React.memo(({ id }) => {
   const [album, setAlbum] = useState()
@@ -55,6 +63,13 @@ export const AlbumPage = React.memo(({ id }) => {
     }
   }, [client, id, setAlbum, setTracks])
 
+  const playTrack = useCallback(
+    index => {
+      setURIs(tracks.slice(index).map(track => track.uri))
+    },
+    [tracks]
+  )
+
   useEffect(() => {
     closeSearch()
     scrollToTop()
@@ -72,18 +87,18 @@ export const AlbumPage = React.memo(({ id }) => {
         <title>Splayer: {buildTitle(album)}</title>
       </Helmet>
 
-      <Player uris={uris} />
+      <Player album={album} uris={uris} />
 
       <Tracks>
-        {tracks.map(track => (
-          <TrackLink
+        {tracks.map((track, index) => (
+          <Track
             key={track.uri}
-            to={trackPath(track)}
             popularity={track.popularity}
             currentTrack={currentTrack && currentTrack.uri === track.uri}
+            onClick={() => playTrack(index)}
           >
             {track.name}
-          </TrackLink>
+          </Track>
         ))}
       </Tracks>
 
@@ -102,10 +117,12 @@ export const AlbumPage = React.memo(({ id }) => {
   )
 })
 
-const TrackLink = styled(PopularityLink)`
+const Track = styled.div`
   margin: 4px;
   display: flex;
   text-align: center;
+  cursor: pointer;
+  font-size: ${props => Math.max(props.popularity, 12)}px;
   
   &::before {
     display: inline-block;
@@ -118,16 +135,31 @@ const TrackLink = styled(PopularityLink)`
     padding-left: 8px;
     content: "${props => (props.currentTrack ? ' <' : '')}";
   }
+  
+  &:hover::before {
+    display: inline-block;
+    padding-right: 8px;
+    color: orange;
+    content: ">";
+  }
+  
+  &:hover::after {
+    display: inline-block;
+    padding-left: 8px;
+    color: orange;
+    content: "<";
+  }
 `
 
 const Info = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 32px;
-  font-size: 32px;
+  padding: 64px;
+  font-size: 24px;
   background: white;
   color: black;
+  white-space: pre-wrap;
 `
 
 const Tracks = styled.div`
@@ -135,6 +167,6 @@ const Tracks = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 32px;
-  min-height: 100vh;
-  justify-content: start;
+  //min-height: 100vh;
+  //justify-content: start;
 `

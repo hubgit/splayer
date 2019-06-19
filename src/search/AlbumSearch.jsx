@@ -8,7 +8,12 @@ import { SearchForm } from '../search/SearchForm'
 import { SearchLink } from './SearchLink'
 import { SearchSplit } from './SearchSplit'
 
-const fields = ['album', 'artist', 'label', 'year']
+const fields = [
+  'artist',
+  'label',
+  'year',
+  // 'album',
+]
 
 export const AlbumSearchLink = ({ query, children }) => (
   <SearchLink query={query} fields={fields} type={'album'}>
