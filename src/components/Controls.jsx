@@ -35,62 +35,48 @@ export const Controls = React.memo(() => {
   }
 
   return (
-    <Container>
-      <Buttons>
-        {track && <Artists>{artistLinks(track.artists)}</Artists>}
+    <>
+      {track && <Artists>{artistLinks(track.artists)}</Artists>}
 
-        <IconButton onClick={togglePlay}>
-          {state.paused ? <PlayCircleFilled /> : <PauseCircleFilled />}
-        </IconButton>
+      <IconButton onClick={togglePlay}>
+        {state.paused ? <PlayCircleFilled /> : <PauseCircleFilled />}
+      </IconButton>
 
-        {/*{track && <Track>{track.name}</Track>}*/}
-        {track && (
-          <Track onClick={toggleTrackActions} ref={trackAnchor}>
-            {track.album.name}
-          </Track>
-        )}
+      {/*{track && <Track>{track.name}</Track>}*/}
+      {track && (
+        <Track onClick={toggleTrackActions} ref={trackAnchor}>
+          {track.album.name}
+        </Track>
+      )}
 
-        <Menu
-          marginThreshold={0}
-          getContentAnchorEl={null}
-          open={trackActionsOpen}
-          anchorEl={trackAnchor.current}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
-          }}
-          transformOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-          TransitionComponent={Fade}
-          onClose={closeTrackActions}
-        >
-          <SaveButton />
-        </Menu>
-      </Buttons>
-    </Container>
+      <Menu
+        open={trackActionsOpen}
+        anchorEl={trackAnchor.current}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        TransitionComponent={Fade}
+        onClose={closeTrackActions}
+      >
+        <SaveButton />
+      </Menu>
+    </>
   )
 })
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`
-
-const Buttons = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
 
 const Meta = styled.div`
   margin: 0 4px;
   width: 400px;
   white-space: nowrap;
   text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 const Artists = styled(Meta)`
@@ -102,17 +88,3 @@ const Track = styled(Meta)`
   font-style: italic;
   cursor: pointer;
 `
-
-/*
-const Info = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: 14px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-  margin: 8px;
-`
-*/

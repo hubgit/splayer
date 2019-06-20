@@ -31,14 +31,12 @@ export const Account = () => {
   const anchorRef = useRef()
 
   return (
-    <div>
+    <>
       <IconButton onClick={toggleMenu} ref={anchorRef}>
         <img src={icon} width={21} height={21} alt={'Account menu'} />
       </IconButton>
 
       <Menu
-        marginThreshold={0}
-        getContentAnchorEl={null}
         open={open}
         anchorEl={anchorRef.current}
         anchorOrigin={{
@@ -60,6 +58,6 @@ export const Account = () => {
         </MenuItem>
         <Auth />
       </Menu>
-    </div>
+    </>
   )
 }

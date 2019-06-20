@@ -16,9 +16,8 @@ export const Footer = () => {
         borderTopColor: backgroundColor,
       }}
     >
-      <div>
-        <SearchButton />
-      </div>
+      <SearchButton />
+
       <Controls />
 
       <Account />
@@ -29,7 +28,7 @@ export const Footer = () => {
 const Container = styled.nav`
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   padding: 0 16px;
   margin-top: 4px;
   z-index: 1;
@@ -39,13 +38,5 @@ const Container = styled.nav`
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  > div:first-child {
-    justify-content: flex-start;
-  }
-
-  > div:last-child {
-    justify-content: flex-end;
   }
 `

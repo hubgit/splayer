@@ -11,6 +11,14 @@ export const Player = React.memo(({ album, uris }) => {
   useLayoutEffect(() => {
     if (player) {
       play(uris)
+
+      if (window.WakeLock) {
+        const { signal } = new AbortController()
+
+        window.WakeLock.request('system', { signal })
+
+        // signal.abort()
+      }
     }
   }, [player, play, uris])
 

@@ -70,7 +70,12 @@ export const SaveButton = () => {
   }, [error, hasAlbum, saving])
 
   if (hasAlbum === undefined) {
-    return null
+    return (
+      <MenuItem onClick={saveAlbum}>
+        <ListItemIcon>…</ListItemIcon>
+        <ListItemText primary="Loading…" />
+      </MenuItem>
+    )
   }
 
   return (
