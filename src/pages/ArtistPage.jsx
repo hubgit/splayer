@@ -3,14 +3,13 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import styled from 'styled-components'
 import { ArtistAlbums } from '../components/ArtistAlbums'
-import { PopularityLink } from '../components/Links'
+import { ArtistTracks } from '../components/ArtistTracks'
 import { Player } from '../components/Player'
 import { RelatedArtists } from '../components/RelatedArtists'
-import { dateToYear, scrollToTop } from '../lib'
+import { scrollToTop } from '../lib'
 import { SearchContext } from '../providers/SearchProvider'
 import { TrackContext } from '../providers/TrackProvider'
 import { ArtistSearchLink } from '../search/ArtistSearch'
-import { trackPath } from './TrackPage'
 
 export const ArtistPage = ({ id }) => {
   const [uris, setURIs] = useState()
@@ -57,29 +56,11 @@ export const ArtistPage = ({ id }) => {
 
       <Artist>{artist.name}</Artist>
 
-      {uris && <Player uris={uris} />}
+      {uris && <Player uris={uris} autoplay={false} />}
 
       <ArtistAlbums artist={artist} />
 
-      <Tracks>
-        <div>tracks</div>
-
-        {tracks &&
-          tracks.map(track => (
-            <TrackLink
-              key={track.uri}
-              to={trackPath(track)}
-              popularity={track.popularity}
-            >
-              <TrackName
-                currentTrack={currentTrack && currentTrack.uri === track.uri}
-              >
-                {track.name}
-              </TrackName>
-              <Year>{dateToYear(track.album.release_date)}</Year>
-            </TrackLink>
-          ))}
-      </Tracks>
+      <ArtistTracks tracks={tracks} currentTrack={currentTrack} />
 
       {artist.genres && (
         <Genres>
@@ -101,45 +82,6 @@ const Artist = styled.div`
   text-align: center;
   font-size: 32px;
   padding: 48px;
-`
-
-const Year = styled.div`
-  font-size: 14px;
-  color: #777;
-`
-
-const TrackName = styled.div`
-  display: flex;
-  text-align: center;
-  
-  &::before {
-    display: inline-block;
-    padding-right: 8px;
-    content: "${props => (props.currentTrack ? '>' : '')}";
-  }
-  
-  &::after {
-    display: inline-block;
-    padding-left: 8px;
-    content: "${props => (props.currentTrack ? ' <' : '')}";
-  }
-`
-
-const TrackLink = styled(PopularityLink)`
-  margin: 4px;
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  flex-direction: column;
-`
-
-const Tracks = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 32px;
-  min-height: 100vh;
-  justify-content: start;
 `
 
 const Genres = styled.div`

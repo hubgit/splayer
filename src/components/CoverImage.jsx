@@ -14,7 +14,7 @@ export const CoverImage = React.memo(
     }
 
     const image = album.images.find(
-      image => image.width === 640 || image.height === 640
+      image => image.width >= 600 || image.height >= 600
     )
 
     const detectColor = useCallback(() => {
@@ -24,6 +24,12 @@ export const CoverImage = React.memo(
         setBackgroundColor(palette.LightVibrant.hex)
       })
     }, [imageRef, setBackgroundColor])
+
+    const enterFullScreen = useCallback(() => {
+      if (imageRef.current) {
+        imageRef.current.requestFullscreen()
+      }
+    }, [imageRef])
 
     if (!image) {
       return null
@@ -35,9 +41,10 @@ export const CoverImage = React.memo(
         crossOrigin={'anonymous'}
         alt={`${album.name} cover`}
         src={image.url}
-        width={image.height}
-        height={image.width}
+        width={image.width}
+        height={image.height}
         onLoad={detectColor}
+        onClick={enterFullScreen}
       />
     )
   },

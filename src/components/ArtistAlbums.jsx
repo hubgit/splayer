@@ -10,7 +10,7 @@ const fetchArtistAlbums = async (artist, client, setAlbums) => {
 
   let response = await client.get(`/artists/${uriToID(artist.uri)}/albums`, {
     params: {
-      include_groups: 'album',
+      include_groups: 'album,single',
       market: 'from_token',
       limit: 50,
     },
@@ -37,25 +37,37 @@ export const ArtistAlbums = ({ artist }) => {
     }
   }, [artist, client, setAlbums])
 
+  let previousYear
+
   return (
     <Container>
-      <div>albums</div>
+      <div>releases</div>
+
       {albums &&
-        albums.map(album => (
-          <AlbumLink key={album.uri} album={album}>
-            <span>{album.name}</span>{' '}
-            <Year>{dateToYear(album.release_date)}</Year>
-          </AlbumLink>
-        ))}
+        albums.map(album => {
+          const year = dateToYear(album.release_date)
+          const displayYear = year !== previousYear ? year : null
+          previousYear = year
+
+          return (
+            <div key={album.uri}>
+              {displayYear && <Year>{dateToYear(album.release_date)}</Year>}
+
+              <AlbumLink key={album.uri} album={album}>
+                {album.name}
+              </AlbumLink>
+            </div>
+          )
+        })}
     </Container>
   )
 }
 
-const Year = styled.span`
+const Year = styled.div`
   font-size: 16px;
   font-family: Roboto, sans-serif;
   color: rgba(0, 0, 0, 0.25);
-  margin-left: 8px;
+  margin: 8px;
 
   &:hover {
     text-decoration: none;

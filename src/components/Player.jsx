@@ -4,12 +4,12 @@ import styled from 'styled-components'
 // import { TrackContext } from '../providers/TrackProvider'
 import { CoverImage } from './CoverImage'
 
-export const Player = React.memo(({ album, uris }) => {
+export const Player = React.memo(({ album, autoplay = true, uris }) => {
   const { player, play } = useContext(SpotifyPlaybackContext)
   // const track = useContext(TrackContext)
 
   useLayoutEffect(() => {
-    if (player) {
+    if (player && autoplay) {
       play(uris)
 
       if (window.WakeLock) {
@@ -20,7 +20,7 @@ export const Player = React.memo(({ album, uris }) => {
         // signal.abort()
       }
     }
-  }, [player, play, uris])
+  }, [autoplay, player, play, uris])
 
   if (!album) {
     return null

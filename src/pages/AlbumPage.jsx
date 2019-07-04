@@ -5,21 +5,22 @@ import styled from 'styled-components'
 import { Player } from '../components/Player'
 import { RelatedArtists } from '../components/RelatedArtists'
 import { artistNames, scrollToTop, uriToID } from '../lib'
+import { ColorContext } from '../providers/ColorProvider'
 import { SearchContext } from '../providers/SearchProvider'
 import { TrackContext } from '../providers/TrackProvider'
 import { AlbumSearchLink } from '../search/AlbumSearch'
 
 const buildTitle = album => [artistNames(album.artists), album.name].join(' / ')
 
-const sum = items => {
-  let total = 0
-
-  for (const item of items) {
-    total += item
-  }
-
-  return total
-}
+// const sum = items => {
+//   let total = 0
+//
+//   for (const item of items) {
+//     total += item
+//   }
+//
+//   return total
+// }
 
 export const AlbumPage = React.memo(({ id }) => {
   const [album, setAlbum] = useState()
@@ -29,6 +30,7 @@ export const AlbumPage = React.memo(({ id }) => {
   const currentTrack = useContext(TrackContext)
   const client = useContext(SpotifyClientContext)
   const { closeSearch } = useContext(SearchContext)
+  const { backgroundColor } = useContext(ColorContext)
 
   useEffect(() => {
     setAlbum(undefined)
@@ -94,8 +96,13 @@ export const AlbumPage = React.memo(({ id }) => {
           <Track
             key={track.uri}
             popularity={track.popularity}
-            currentTrack={currentTrack && currentTrack.uri === track.uri}
             onClick={() => playTrack(index)}
+            style={{
+              backgroundColor:
+                currentTrack && currentTrack.uri === track.uri
+                  ? backgroundColor
+                  : 'transparent',
+            }}
           >
             {track.name}
           </Track>
@@ -119,35 +126,14 @@ export const AlbumPage = React.memo(({ id }) => {
 
 const Track = styled.div`
   margin: 4px;
+  padding: 0 1ch;
   display: flex;
   text-align: center;
   cursor: pointer;
   font-size: ${props => Math.max(props.popularity, 12)}px;
-  
-  &::before {
-    display: inline-block;
-    padding-right: 8px;
-    content: "${props => (props.currentTrack ? '>' : '')}";
-  }
-  
-  &::after {
-    display: inline-block;
-    padding-left: 8px;
-    content: "${props => (props.currentTrack ? ' <' : '')}";
-  }
-  
-  &:hover::before {
-    display: inline-block;
-    padding-right: 8px;
-    color: orange;
-    content: ">";
-  }
-  
-  &:hover::after {
-    display: inline-block;
-    padding-left: 8px;
-    color: orange;
-    content: "<";
+
+  &:hover {
+    background-color: yellow;
   }
 `
 
