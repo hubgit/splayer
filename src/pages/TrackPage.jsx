@@ -12,11 +12,7 @@ import { SearchContext } from '../providers/SearchProvider'
 export const trackPath = track => `/tracks/${uriToID(track.uri)}`
 
 const buildTitle = track =>
-  [
-    artistNames(track.artists),
-    track.album.name,
-    track.name,
-  ].join(' / ')
+  [artistNames(track.artists), track.album.name, track.name].join(' / ')
 
 export const TrackPage = React.memo(({ id }) => {
   const [track, setTrack] = useState()
@@ -26,18 +22,17 @@ export const TrackPage = React.memo(({ id }) => {
   const { closeSearch } = useContext(SearchContext)
 
   useEffect(() => {
-    if (client) {
-      client
-        .get(`/tracks/${id}`, {
-          params: {
-            market: 'from_token',
-          },
-        })
-        .then(({ data }) => {
-          setTrack(data)
-          setURIs([data.uri])
-        })
-    }
+    client
+      .request({
+        url: `/tracks/${id}`,
+        params: {
+          market: 'from_token',
+        },
+      })
+      .then(data => {
+        setTrack(data)
+        setURIs([data.uri])
+      })
   }, [client, id])
 
   useEffect(() => {

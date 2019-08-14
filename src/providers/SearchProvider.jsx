@@ -16,10 +16,6 @@ export const SearchProvider = ({ children }) => {
 
   const search = useCallback(
     query => {
-      if (!client) {
-        throw new Error('No client yet!')
-      }
-
       setResults({})
 
       if (!query) {
@@ -38,7 +34,8 @@ export const SearchProvider = ({ children }) => {
       const { query: queryData, fields, type, limit } = query
 
       client
-        .get('/search', {
+        .request({
+          url: '/search',
           params: {
             q: buildQuery(queryData, fields),
             type,
@@ -47,10 +44,10 @@ export const SearchProvider = ({ children }) => {
           },
           cancelToken: source.token,
         })
-        .then(response => {
+        .then(data => {
           setResults({
             ...results,
-            [type]: response.data,
+            [type]: data,
           })
         })
     },

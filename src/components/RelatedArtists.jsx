@@ -12,22 +12,21 @@ export const RelatedArtists = React.memo(
     const client = useContext(SpotifyClientContext)
 
     useEffect(() => {
-      if (client) {
-        setArtists(undefined)
+      setArtists(undefined)
 
-        const source = CancelToken.source()
+      const source = CancelToken.source()
 
-        client
-          .get(`/artists/${uriToID(artist.uri)}/related-artists`, {
-            cancelToken: source.token,
-          })
-          .then(({ data: { artists } }) => {
-            setArtists(artists)
-          })
+      client
+        .request({
+          url: `/artists/${uriToID(artist.uri)}/related-artists`,
+          cancelToken: source.token,
+        })
+        .then(({ artists }) => {
+          setArtists(artists)
+        })
 
-        return () => {
-          source.cancel('Related artists fetch cancelled')
-        }
+      return () => {
+        source.cancel('Related artists fetch cancelled')
       }
     }, [client, artist, setArtists])
 

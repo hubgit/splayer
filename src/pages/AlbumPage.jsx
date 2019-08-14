@@ -33,36 +33,41 @@ export const AlbumPage = React.memo(({ id }) => {
   const { backgroundColor } = useContext(ColorContext)
 
   useEffect(() => {
+    if (id) {
+      window.localStorage.setItem('album', id)
+    }
+  }, [id])
+
+  useEffect(() => {
     setAlbum(undefined)
     setTracks(undefined)
     setURIs(undefined)
 
-    if (client) {
-      client
-        .get(`/albums/${id}`, {
-          params: {
-            market: 'from_token',
-          },
-        })
-        .then(({ data: album }) => {
-          setAlbum(album)
+    client
+      .request({
+        url: `/albums/${id}`,
+        params: {
+          market: 'from_token',
+        },
+      })
+      .then(album => {
+        setAlbum(album)
 
-          client
-            .get('/tracks', {
-              params: {
-                market: 'from_token',
-                ids: album.tracks.items
-                  .map(track => uriToID(track.uri))
-                  .join(','),
-              },
-            })
-            .then(response => {
-              const { tracks } = response.data
-              setTracks(tracks)
-              setURIs(tracks.map(track => track.uri))
-            })
-        })
-    }
+        client
+          .request({
+            url: '/tracks',
+            params: {
+              market: 'from_token',
+              ids: album.tracks.items
+                .map(track => uriToID(track.uri))
+                .join(','),
+            },
+          })
+          .then(({ tracks }) => {
+            setTracks(tracks)
+            setURIs(tracks.map(track => track.uri))
+          })
+      })
   }, [client, id, setAlbum, setTracks])
 
   const playTrack = useCallback(

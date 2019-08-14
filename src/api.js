@@ -33,17 +33,18 @@ export const fetchAlbums = async (albums, client, setItems) => {
   console.log({ filteredAlbums })
 
   for (let i = 0; i < filteredAlbums.length; i += 20) {
-    const ids = filteredAlbums
-      .slice(i, i + 20)
-      .map(item => uriToID(item.uri))
-      .join(',')
-
-    await client
-      .get('/albums', {
+    const data = await client.request({
+      url: '/albums',
+      params: {
+        ids: filteredAlbums
+          .slice(i, i + 20)
+          .map(item => uriToID(item.uri))
+          .join(','),
         market: 'from_token',
-        params: { ids },
-      })
-      .then(response => details.push(...response.data.albums))
+      },
+    })
+
+    details.push(...data.albums)
   }
 
   setItems(filterAlbums(details))

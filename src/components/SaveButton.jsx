@@ -21,17 +21,14 @@ export const SaveButton = () => {
     setHasAlbum(undefined)
 
     if (trackUri) {
-      client
-        .get('/me/albums/contains', {
-          params: {
-            ids: [uriToID(trackUri)].join(','),
-          },
-        })
-        .then(response => {
-          const [hasAlbum] = response.data
-
-          setHasAlbum(hasAlbum)
-        })
+      client.request({
+        url: '/me/albums/contains',
+        params: {
+          ids: [uriToID(trackUri)].join(','),
+        },
+      }).then(([hasAlbum]) => {
+        setHasAlbum(hasAlbum)
+      })
     } else {
       setHasAlbum(false)
     }
@@ -41,8 +38,11 @@ export const SaveButton = () => {
     setSaving(true)
     setError(undefined)
 
-    client
-      .put('/me/albums', [uriToID(track.album.uri)])
+    client.request({
+      method: 'put',
+      url: '/me/albums',
+      data: [uriToID(track.album.uri)],
+    })
       .then(() => {
         setSaving(false)
         setHasAlbum(true)

@@ -8,7 +8,8 @@ import { AlbumLink } from '../links/AlbumLink'
 const fetchArtistAlbums = async (artist, client, setAlbums) => {
   const albums = []
 
-  let response = await client.get(`/artists/${uriToID(artist.uri)}/albums`, {
+  let { items, next } = await client.request({
+    url: `/artists/${uriToID(artist.uri)}/albums`,
     params: {
       include_groups: 'album,single',
       market: 'from_token',
@@ -16,11 +17,13 @@ const fetchArtistAlbums = async (artist, client, setAlbums) => {
     },
   })
 
-  albums.push(...response.data.items)
+  albums.push(...items)
 
-  while (response.data.next) {
-    response = await client.get(response.data.next)
-    albums.push(...response.data.items)
+  while (next) {
+    const { items } = await client.request({
+      url: next
+    })
+    albums.push(...items)
   }
 
   fetchAlbums(albums, client, setAlbums)
@@ -32,9 +35,7 @@ export const ArtistAlbums = ({ artist }) => {
   const [albums, setAlbums] = useState()
 
   useEffect(() => {
-    if (client) {
       fetchArtistAlbums(artist, client, setAlbums)
-    }
   }, [artist, client, setAlbums])
 
   let previousYear

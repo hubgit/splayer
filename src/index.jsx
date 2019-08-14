@@ -9,7 +9,7 @@ import { TrackProvider } from './providers/TrackProvider'
 render(
   <SpotifyProvider
     clientID={'00e31e7317d64ebe88d970a469de42d7'}
-    redirectURI={window.location.origin}
+    // redirectURI={window.location.origin}
     scopes={[
       'streaming',
       'user-read-private',

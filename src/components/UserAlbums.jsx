@@ -10,19 +10,18 @@ export const UserAlbums = () => {
   const [albums, setAlbums] = useState()
 
   useEffect(() => {
-    if (client) {
-      client
-        .get(`/me/albums`, {
-          params: {
-            market: 'from_token',
-            limit: 50, // TODO: pagination
-          },
-        })
-        .then(response => {
-          setAlbums(response.data.items.map(item => item.album))
-        })
-    }
-  }, [client, setAlbums])
+    client
+      .request({
+        url: `/me/albums`,
+        params: {
+          market: 'from_token',
+          limit: 50, // TODO: pagination
+        },
+      })
+      .then(data => {
+        setAlbums(data.items.map(item => item.album))
+      })
+  }, [client])
 
   if (!albums) {
     return null

@@ -21,22 +21,19 @@ export const ArtistPage = ({ id }) => {
   const currentTrack = useContext(TrackContext)
 
   useEffect(() => {
-    if (client) {
-      client.get(`/artists/${id}`).then(({ data }) => setArtist(data))
+    client.request({
+        url: `/artists/${id}`,
+      }).then(data => setArtist(data))
 
-      client
-        .get(`/artists/${id}/top-tracks`, {
-          params: {
-            market: 'from_token',
-          },
-        })
-        .then(response => {
-          const { tracks } = response.data
-
-          setTracks(tracks)
-          setURIs(tracks.map(track => track.uri))
-        })
-    }
+    client.request({
+        url: `/artists/${id}/top-tracks`,
+        params: {
+          market: 'from_token',
+        },
+      }).then(({ tracks }) => {
+        setTracks(tracks)
+        setURIs(tracks.map(track => track.uri))
+      })
   }, [client, id, setArtist, setURIs])
 
   useEffect(() => {
