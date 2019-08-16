@@ -2,6 +2,11 @@
   "version": 2,
   "name": "splayer",
   "alias": "splayer",
+  "build": {
+    "env": {
+      "REACT_APP_SPOTIFY_CLIENT_ID": "@spotify-client-id"
+    }
+  },
   "builds": [{
     "src": "package.json",
     "use": "@now/static-build",
@@ -16,9 +21,18 @@
       },
       "dest": "/static/$1"
     },
+    { "src": "/sockjs-node/(.*)", "dest": "/sockjs-node/$1" },
     {
       "src": "/favicon.ico",
       "dest": "/favicon.ico"
+    },
+    {
+      "src": "/popup-callback",
+      "dest": "/popup-callback.html"
+    },
+    {
+      "src": "/passive-callback",
+      "dest": "/passive-callback.html"
     },
     {
       "src": "/(.*)",

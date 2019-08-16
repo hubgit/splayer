@@ -8,7 +8,7 @@ import { TrackProvider } from './providers/TrackProvider'
 
 render(
   <SpotifyProvider
-    clientID={'00e31e7317d64ebe88d970a469de42d7'}
+    clientID={process.env.REACT_APP_SPOTIFY_CLIENT_ID}
     // redirectURI={window.location.origin}
     scopes={[
       'streaming',

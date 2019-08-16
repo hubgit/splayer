@@ -1,26 +1,32 @@
-import { SpotifyPlaybackContext } from '@aeaton/react-spotify'
+import {
+  SpotifyPlaybackContext,
+  SpotifyProfileContext,
+} from '@aeaton/react-spotify'
 import { Router } from '@reach/router'
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { Footer } from './components/Footer'
-// import { Login } from './components/Login'
+import { Login } from './components/Login'
 import { AlbumPage } from './pages/AlbumPage'
 import { ArtistPage } from './pages/ArtistPage'
 import { HomePage } from './pages/HomePage'
 import { TrackPage } from './pages/TrackPage'
 
 export const App = () => {
-  // const { profile } = useContext(SpotifyProfileContext)
+  const profile = useContext(SpotifyProfileContext)
   const { error: playerError } = useContext(SpotifyPlaybackContext)
 
-  // if (!accessToken) {
-  //   return <Login />
-  // }
+  if (profile.loading) {
+    return null
+  }
+
+  if (!profile.data) {
+    return <Login />
+  }
 
   return (
     <Container>
       <Main>
-        {/*{authError && <div>{authError}</div>}*/}
         {playerError && <div>{playerError}</div>}
 
         <Router>

@@ -1,4 +1,4 @@
-import { SpotifyContext } from '@aeaton/react-spotify'
+import { SpotifyClientContext } from '@aeaton/react-spotify'
 import { Button } from '@material-ui/core'
 import React, { useContext } from 'react'
 import styled from 'styled-components'
@@ -12,11 +12,11 @@ const Container = styled.div`
 `
 
 export const Login = () => {
-  const { login } = useContext(SpotifyContext)
+  const client = useContext(SpotifyClientContext)
 
   return (
     <Container>
-      <Button onClick={login}>Sign in with Spotify</Button>
+      <Button onClick={client.login}>Sign in with Spotify</Button>
     </Container>
   )
 }

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Successfully logged in</title>
+<script>
+  window.onload = function() {
+    window.opener.popupCompleted();
+
+    setTimeout(function() {
+      window.close();
+    }, 200);
+  };
+</script>
