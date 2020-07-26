@@ -9,15 +9,19 @@ export const Player = React.memo(({ album, autoplay = true, uris }) => {
   // const track = useContext(TrackContext)
 
   useLayoutEffect(() => {
+    let wakeLock = null
+    
     if (player && autoplay) {
       play(uris)
 
-      if (window.WakeLock) {
-        const { signal } = new AbortController()
-
-        window.WakeLock.request('system', { signal })
-
-        // signal.abort()
+      if ('wakeLock' in navigator) {
+        wakeLock = await navigator.wakeLock.request('screen')
+      }
+    }
+    
+    return () => {
+      if (wakeLock) {
+        wakeLock.release()
       }
     }
   }, [autoplay, player, play, uris])
