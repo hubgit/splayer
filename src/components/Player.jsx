@@ -8,7 +8,7 @@ export const Player = React.memo(({ album, autoplay = true, uris }) => {
   const { player, play } = useContext(SpotifyPlaybackContext)
   // const track = useContext(TrackContext)
 
-  useLayoutEffect(() => {
+  useLayoutEffect(async () => {
     let wakeLock = null
     
     if (player && autoplay) {
