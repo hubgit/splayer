@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "alias": ["splayer.now.sh"],
   "build": {
     "env": {
       "REACT_APP_SPOTIFY_CLIENT_ID": "@spotify-client-id"

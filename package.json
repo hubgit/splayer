@@ -24,8 +24,8 @@
     "core-js": "2"
   },
   "scripts": {
-    "start": "BROWSER=none react-scripts start",
-    "build": "react-scripts build"
+    "now-dev": "BROWSER=none react-scripts start",
+    "now-build": "react-scripts build"
   },
   "eslintConfig": {
     "extends": "react-app"
