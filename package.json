@@ -20,7 +20,8 @@
   "devDependencies": {
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
-    "@types/styled-components": "^5.1.1"
+    "@types/styled-components": "^5.1.1",
+    "core-js": "2"
   },
   "scripts": {
     "start": "BROWSER=none react-scripts start",
