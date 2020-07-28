@@ -87,4 +87,5 @@ const Track = styled(Meta)`
   text-align: left;
   font-style: italic;
   cursor: pointer;
+  overflow: auto;
 `

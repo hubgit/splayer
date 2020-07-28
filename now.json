@@ -1,7 +1,5 @@
 {
   "version": 2,
-  "name": "splayer",
-  "alias": "splayer",
   "build": {
     "env": {
       "REACT_APP_SPOTIFY_CLIENT_ID": "@spotify-client-id"
